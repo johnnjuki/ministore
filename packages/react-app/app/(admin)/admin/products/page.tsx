@@ -51,11 +51,22 @@ export default function ProductsPage() {
         </Link>
       </div>
       <Separator />
-
-      {isPending ? (
-        <Skeleton className="h-[350px] w-full rounded-xl" />
+      {!isConnected ? (
+        <p className="text-center text-sm text-red-500">
+          Please connect your wallet
+        </p>
       ) : (
-        <DataTable searchKey="name" columns={columns} data={[...products!!]} />
+        <>
+          {isPending ? (
+            <Skeleton className="h-[350px] w-full rounded-xl" />
+          ) : (
+            <DataTable
+              searchKey="name"
+              columns={columns}
+              data={[...products!!]}
+            />
+          )}
+        </>
       )}
     </main>
   );

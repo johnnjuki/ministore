@@ -47,10 +47,6 @@ export default function NewProductPage() {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!isConnected) {
-      toast.error("Please connect your wallet");
-      return;
-    }
     if (!cid) {
       toast.error("Please wait for the product image to upload");
       return;
@@ -107,62 +103,68 @@ export default function NewProductPage() {
     <div className="flex-col space-y-4">
       <Heading title="Add Product" description="Add a new product" />
       <Separator />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <input
-            required
-            type="file"
-            id="file"
-            ref={inputFile}
-            onChange={handleChange}
-          />
-          <Button
-            variant="secondary"
-            disabled={uploading}
-            onClick={() => inputFile.current && inputFile.current.click()}
-          >
-            {uploading ? "Uploading" : "Upload"}
-          </Button>
-          {cid && (
-            <Image
-              src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
-              alt="Image from IPFS"
-              width={200}
-              height={200}
+      {!isConnected ? (
+        <p className="text-center text-sm text-red-500">
+          Please connect your wallet
+        </p>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <input
+              required
+              type="file"
+              id="file"
+              ref={inputFile}
+              onChange={handleChange}
             />
-          )}
-          <FormField
-            name="name"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Product Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+            <Button
+              variant="secondary"
+              disabled={uploading}
+              onClick={() => inputFile.current && inputFile.current.click()}
+            >
+              {uploading ? "Uploading" : "Upload"}
+            </Button>
+            {cid && (
+              <Image
+                src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
+                alt="Image from IPFS"
+                width={200}
+                height={200}
+              />
             )}
-          />
-          <FormField
-            name="price"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input type="number" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Product Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="price"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
+                  <FormControl>
+                    <Input type="number" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Button disabled={isPending} type="submit">
-            {isPending ? "Adding..." : "Add"}
-          </Button>
-        </form>
-      </Form>
+            <Button disabled={isPending} type="submit">
+              {isPending ? "Adding..." : "Add"}
+            </Button>
+          </form>
+        </Form>
+      )}
     </div>
   );
 }
