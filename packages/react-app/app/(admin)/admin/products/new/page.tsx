@@ -1,5 +1,13 @@
 "use client";
 
+import Image from "next/image";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useRouter } from "next/navigation";
+import { useAccount, useWriteContract } from "wagmi";
+
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,11 +20,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { toast } from "sonner";
+import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -24,9 +29,11 @@ const formSchema = z.object({
 });
 
 export default function NewProductPage() {
+  const { address, isConnected } = useAccount();
+  const router = useRouter();
+  const { isPending, error, writeContractAsync } = useWriteContract();
   const [file, setFile] = useState("");
   const [cid, setCid] = useState("");
-  const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   const inputFile = useRef<HTMLInputElement>(null);
@@ -39,13 +46,27 @@ export default function NewProductPage() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    if (!isConnected) {
+      toast.error("Please connect your wallet");
+      return;
+    }
     try {
-      setLoading(true);
+      const hash = await writeContractAsync({
+        address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+        abi: ministoreAbi,
+        functionName: "addProduct",
+        args: [cid, data.name, BigInt(data.price)],
+      });
+      if (hash) {
+        toast("Product added");
+        router.refresh();
+        router.push("/admin/products")
+      }
     } catch (e) {
       console.log(e);
-      setLoading(false);
-      alert("Trouble creating product"); // TODO: Replace with toast
+      toast.error("Failed to add product, try again.");
+      return;
     }
   }
 
@@ -57,7 +78,7 @@ export default function NewProductPage() {
       setUploading(true);
       const data = new FormData();
       data.set("file", fileToUpload);
-      const res = await fetch("/api/products", {
+      const res = await fetch("/api/admin/products", {
         method: "POST",
         body: data,
       });
@@ -67,7 +88,7 @@ export default function NewProductPage() {
     } catch (e) {
       console.log(e);
       setUploading(false);
-      alert("Trouble uploading file");
+      toast.error("Failed to upload image, try again.");
     }
   };
 
@@ -79,27 +100,32 @@ export default function NewProductPage() {
 
   return (
     <div className="flex-col space-y-4">
-      <Heading title="Create Product" description="Add a new product" />
+      <Heading title="Add Product" description="Add a new product" />
       <Separator />
-      <input type="file" id="file" ref={inputFile} onChange={handleChange} />
-      <Button
-        variant="secondary"
-        disabled={uploading}
-        onClick={() => inputFile.current && inputFile.current.click()}
-      >
-        {uploading ? "Uploading" : "Upload"}
-      </Button>
-      {cid && (
-        <Image
-          src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
-          alt="Image from IPFS"
-          width={200}
-          height={200}
-        />
-      )}
-
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <input
+            required
+            type="file"
+            id="file"
+            ref={inputFile}
+            onChange={handleChange}
+          />
+          <Button
+            variant="secondary"
+            disabled={uploading}
+            onClick={() => inputFile.current && inputFile.current.click()}
+          >
+            {uploading ? "Uploading" : "Upload"}
+          </Button>
+          {cid && (
+            <Image
+              src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${cid}`}
+              alt="Image from IPFS"
+              width={200}
+              height={200}
+            />
+          )}
           <FormField
             name="name"
             control={form.control}
@@ -127,8 +153,8 @@ export default function NewProductPage() {
             )}
           />
 
-          <Button disabled={loading} type="submit">
-            {loading ? "Adding..." : "Add"}
+          <Button disabled={isPending} type="submit">
+            {isPending ? "Adding..." : "Add"}
           </Button>
         </form>
       </Form>

@@ -1,10 +1,11 @@
+import Link from "next/link";
+import { Plus } from "lucide-react";
+
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@/components/ui/separator";
-import { Plus } from "lucide-react";
 import { columns } from "./components/columns";
-import Link from "next/link";
 
 export default function ProductsPage() {
   return (
