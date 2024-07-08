@@ -7,6 +7,7 @@ contract MiniStore {
         string imageIpfsCid;
         string name;
         uint256 price;
+        address owner;
     }
 
     // Tracks the number of products added by each user
@@ -14,6 +15,9 @@ contract MiniStore {
 
     // Stores the products added by each user
     mapping(address => mapping(uint256 => Product)) public products;
+
+    // Array to store all products
+    Product[] public allProducts;
 
     event ProductAdded(
         address indexed owner,
@@ -30,20 +34,24 @@ contract MiniStore {
         uint256 _price
     ) public {
         uint256 productId = productCount[msg.sender];
-        products[msg.sender][productId] = Product({
+        Product memory newProduct = Product({
             id: productId,
             imageIpfsCid: _imageIpfsCid,
             name: _name,
-            price: _price
+            price: _price,
+            owner: msg.sender
         });
+
+        products[msg.sender][productId] = newProduct;
+        allProducts.push(newProduct);
 
         productCount[msg.sender]++;
 
         emit ProductAdded(msg.sender, productId, _imageIpfsCid, _name, _price);
     }
 
-    // Gets the list of products they've added
-    function getProductsByOwner(
+    // Gets the list of products added by a specific user
+    function getProducts(
         address _owner
     ) public view returns (Product[] memory) {
         uint256 count = productCount[_owner];
@@ -52,5 +60,10 @@ contract MiniStore {
             userProducts[i] = products[_owner][i];
         }
         return userProducts;
+    }
+
+    // Gets the list of all products
+    function getAllProducts() public view returns (Product[] memory) {
+        return allProducts;
     }
 }

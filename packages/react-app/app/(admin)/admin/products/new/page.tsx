@@ -8,6 +8,7 @@ import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { useAccount, useWriteContract } from "wagmi";
 
+import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +22,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -51,9 +51,14 @@ export default function NewProductPage() {
       toast.error("Please connect your wallet");
       return;
     }
+    if (!cid) {
+      toast.error("Please wait for the product image to upload");
+      return;
+    }
     try {
       const hash = await writeContractAsync({
-        address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+        address: process.env
+          .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
         abi: ministoreAbi,
         functionName: "addProduct",
         args: [cid, data.name, BigInt(data.price)],
@@ -61,7 +66,7 @@ export default function NewProductPage() {
       if (hash) {
         toast("Product added");
         router.refresh();
-        router.push("/admin/products")
+        router.push("/admin/products");
       }
     } catch (e) {
       console.log(e);
