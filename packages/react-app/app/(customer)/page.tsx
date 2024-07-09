@@ -32,7 +32,7 @@ export default function CustomerPage() {
   }
 
   return (
-    <div className="mt-6">
+    <div>
       {isPending ? (
         <Skeleton className="aspect-square rounded-xl" />
       ) : (
@@ -44,7 +44,9 @@ export default function CustomerPage() {
           ) : (
             <div className="grid grid-cols-1 gap-6">
               {products?.map((product: Product, index) => (
-                <ProductCard key={index} product={product} />
+                <Link href={`/product/${product.owner}/${product.id}`} key={index}>
+                <ProductCard product={product} />
+                </Link>
               ))}
             </div>
           )}

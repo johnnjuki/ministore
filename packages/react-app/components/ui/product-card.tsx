@@ -10,7 +10,7 @@ export type Product = {
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <div className="group cursor-pointer space-y-4 rounded-xl border bg-white p-3">
+    <div className="group space-y-4 rounded-xl border bg-white p-3">
       <div className="aspect-square rounded-xl bg-gray-100 relative">
         <Image
           src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${product.imageIpfsCid}`}
