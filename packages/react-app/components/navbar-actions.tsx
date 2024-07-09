@@ -5,15 +5,18 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import useCart from "@/hooks/use-cart";
 
 const NavbarActions = () => {
   const [isMounted, setIsMounted] = useState(false);
-  const router = useRouter();
-
+  
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  const router = useRouter();
+  const cart = useCart();
+  
   if (!isMounted) {
     return null;
   }
@@ -22,7 +25,9 @@ const NavbarActions = () => {
     <div className="flex items-center">
       <Button className="flex items-center rounded-full bg-black hover:bg-gray-700 px-4 py-2" variant="outline" onClick={() => router.push("/cart")}>
         <ShoppingBag size={20} color="white" className="" />
-        {/* // TODO: Add  number of cart items */}
+        <span className="ml-2 text-sm font-medium text-white">
+          {cart.items.length}
+        </span>
       </Button>
     </div>
   );

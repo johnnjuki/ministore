@@ -1,12 +1,5 @@
+import { Product } from "@/types";
 import Image from "next/image";
-
-export type Product = {
-  id: bigint;
-  imageIpfsCid: string;
-  name: string;
-  price: bigint;
-  owner: string;
-};
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (

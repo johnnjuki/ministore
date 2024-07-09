@@ -10,7 +10,7 @@ import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@/components/ui/separator";
-import { columns } from "./components/columns";
+import { columns } from "./columns";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductsPage() {

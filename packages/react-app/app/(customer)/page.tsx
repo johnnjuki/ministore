@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useReadContract, useAccount } from "wagmi";
 import { useEffect, useState } from "react";
+import { useAccount, useReadContract } from "wagmi";
 
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
 import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
-import ProductCard, { Product } from "@/components/ui/product-card";
+import ProductCard from "@/components/ui/product-card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Product } from "@/types";
 
 export default function CustomerPage() {
   const { address, isConnected } = useAccount();
@@ -33,22 +33,33 @@ export default function CustomerPage() {
 
   return (
     <div>
-      {isPending ? (
-        <Skeleton className="aspect-square rounded-xl" />
+      {error ? (
+        <p className="text-center text-sm mt-16 text-red-500">
+          Error fetching products.
+        </p>
       ) : (
         <>
-          {products?.length === 0 ? (
-            <div className="flex h-full w-full items-center justify-center text-neutral-500">
-              No products found.
-            </div>
+          {isPending ? (
+            <Skeleton className="aspect-square rounded-xl" />
           ) : (
-            <div className="grid grid-cols-1 gap-6">
-              {products?.map((product: Product, index) => (
-                <Link href={`/product/${product.owner}/${product.id}`} key={index}>
-                <ProductCard product={product} />
-                </Link>
-              ))}
-            </div>
+            <>
+              {products?.length === 0 ? (
+                <div className="flex h-full w-full items-center justify-center text-neutral-500">
+                  No products found.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-6">
+                  {products?.map((product: Product, index) => (
+                    <Link
+                      href={`/product/${product.owner}/${product.id}`}
+                      key={index}
+                    >
+                      <ProductCard product={product} />
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </>
       )}

@@ -9,12 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import { Separator } from "@/components/ui/separator";
+import useCart from "@/hooks/use-cart";
 
 export default function ProductPage({
   params,
 }: {
   params: { slug: string[] };
 }) {
+  const [isMounted, setIsMounted] = useState(false);
+  const cart = useCart();
+
   const {
     data: product,
     isPending,
@@ -26,8 +30,6 @@ export default function ProductPage({
     args: [`${params.slug[0]!!}` as `0x${string}`, BigInt(params.slug[1])],
   });
 
-  const [isMounted, setIsMounted] = useState(false);
-
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -35,6 +37,10 @@ export default function ProductPage({
   if (!isMounted) {
     return null;
   }
+
+  const onAddToCart = () => {
+    cart.addItem(product!!);
+  };
 
   return (
     <div className="">
@@ -66,9 +72,7 @@ export default function ProductPage({
                 <Separator className="my-4" />
                 <div className="flex items-center gap-x-3">
                   <Button
-                    onClick={() => {
-                      // TODO: Add product to cart
-                    }}
+                    onClick={onAddToCart}
                     className="flex items-center gap-x-2 rounded-full"
                   >
                     Add To Cart
