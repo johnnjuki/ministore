@@ -66,4 +66,13 @@ contract MiniStore {
     function getAllProducts() public view returns (Product[] memory) {
         return allProducts;
     }
+
+    // Gets a specific product by owner's address and product ID
+    function getProduct(
+        address _owner,
+        uint256 _productId
+    ) public view returns (Product memory) {
+        require(_productId < productCount[_owner], "Product does not exist");
+        return products[_owner][_productId];
+    }
 }
