@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import { useAccount, useReadContract } from "wagmi";
 import { useEffect, useState } from "react";
 
@@ -39,6 +39,9 @@ export default function ProductsPage() {
 
   return (
     <main className="flex-col space-y-4">
+      <Link href="/admin">
+      <ArrowLeft />
+      </Link>
       <div className="flex items-center justify-between">
         <Heading
           title="Products"

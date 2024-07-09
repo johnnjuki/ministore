@@ -10,7 +10,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Product } from "@/types";
 
 export default function CustomerPage() {
-  const { address, isConnected } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
 
   const {

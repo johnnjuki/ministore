@@ -8,6 +8,7 @@ contract MiniStore {
         string name;
         uint256 price;
         address owner;
+        address[] customers;
     }
 
     // Tracks the number of products added by each user
@@ -19,6 +20,9 @@ contract MiniStore {
     // Array to store all products
     Product[] public allProducts;
 
+    // Mapping to track purchased products by each customer
+    mapping(address => Product[]) public purchasedProducts;
+
     event ProductAdded(
         address indexed owner,
         uint256 productId,
@@ -27,7 +31,13 @@ contract MiniStore {
         uint256 price
     );
 
-    // Adds a new product
+    event ProductPurchased(
+        address indexed customer,
+        address indexed seller,
+        uint256 productId,
+        uint256 price
+    );
+
     function addProduct(
         string memory _imageIpfsCid,
         string memory _name,
@@ -39,7 +49,8 @@ contract MiniStore {
             imageIpfsCid: _imageIpfsCid,
             name: _name,
             price: _price,
-            owner: msg.sender
+            owner: msg.sender,
+            customers: new address[](0)
         });
 
         products[msg.sender][productId] = newProduct;
@@ -50,7 +61,6 @@ contract MiniStore {
         emit ProductAdded(msg.sender, productId, _imageIpfsCid, _name, _price);
     }
 
-    // Gets the list of products added by a specific user
     function getProducts(
         address _owner
     ) public view returns (Product[] memory) {
@@ -62,17 +72,47 @@ contract MiniStore {
         return userProducts;
     }
 
-    // Gets the list of all products
     function getAllProducts() public view returns (Product[] memory) {
         return allProducts;
     }
 
-    // Gets a specific product by owner's address and product ID
     function getProduct(
         address _owner,
         uint256 _productId
     ) public view returns (Product memory) {
         require(_productId < productCount[_owner], "Product does not exist");
         return products[_owner][_productId];
+    }
+
+    function purchaseProducts(address[] memory _owners, uint256[] memory _productIds) public payable {
+        require(_owners.length == _productIds.length, "Mismatched owners and product IDs");
+
+        uint256 totalCost = 0;
+
+        for (uint256 i = 0; i < _owners.length; i++) {
+            Product storage product = products[_owners[i]][_productIds[i]];
+            require(product.id == _productIds[i], "Product does not exist");
+            totalCost += (product.price * 1 ether);
+        }
+
+        require(msg.value == totalCost, "Incorrect value sent");
+
+        for (uint256 i = 0; i < _owners.length; i++) {
+            Product storage product = products[_owners[i]][_productIds[i]];
+
+            payable(product.owner).transfer(product.price * 1 ether);
+
+            purchasedProducts[msg.sender].push(product);
+
+            product.customers.push(msg.sender);
+
+            emit ProductPurchased(msg.sender, _owners[i], _productIds[i], product.price);
+        }
+    }
+
+    function getPurchasedProducts(
+        address _customer
+    ) public view returns (Product[] memory) {
+        return purchasedProducts[_customer];
     }
 }
