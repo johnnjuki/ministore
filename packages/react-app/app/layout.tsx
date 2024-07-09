@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Urbanist } from "next/font/google";
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { BlockchainProviders } from "@/providers/blockchain-providers";
@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+const urbanist = Urbanist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "MiniStore",
@@ -22,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} mx-auto p-2 max-w-sm`}>
+      <body className={`${urbanist.className} mx-auto p-2 max-w-sm`}>
         <BlockchainProviders>
           <Header />
           {children}
