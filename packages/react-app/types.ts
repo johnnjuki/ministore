@@ -5,11 +5,3 @@ export type Product = {
   price: bigint;
   owner: string;
 };
-
-export type CartItem = {
-  id: number;
-  imageIpfsCid: string;
-  name: string;
-  price: number;
-  owner: string;
-}
