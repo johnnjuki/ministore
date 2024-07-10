@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useReadContract } from "wagmi";
 
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import useCart from "@/hooks/use-cart";
 
 export default function ProductPage({
@@ -70,7 +70,8 @@ export default function ProductPage({
                   ${BigInt(product.price).toString()}
                 </p>
                 <Separator className="my-4" />
-                <div className="flex items-center gap-x-3">
+                <p className="text-green-500">In Stock</p>
+                <div className="flex items-center gap-x-3 mt-4">
                   <Button
                     onClick={onAddToCart}
                     className="flex items-center gap-x-2 rounded-full"

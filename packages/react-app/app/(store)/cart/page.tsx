@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 
 import useCart from "@/hooks/use-cart";
-import CartItem from "@/components/(customer)/cart/cart-item";
-import Checkout from "@/components/(customer)/cart/checkout";
+import CartItem from "@/components/(store)/cart/cart-item";
+import Checkout from "@/components/(store)/cart/checkout";
 
 // export const revalidate = 0;
 

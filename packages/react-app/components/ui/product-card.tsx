@@ -12,9 +12,12 @@ const ProductCard = ({ product }: { product: Product }) => {
           className="aspect-square rounded-md object-cover"
         />
       </div>
-      <div className="space-y-1">
+      <div className="">
         <p className="text-lg font-semibold">{product.name}</p>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm mt-1 text-green-500">
+         In Stock
+        </p>
+        <p className="font-semibold mt-3">
           ${BigInt(product.price).toString()}
         </p>
       </div>
