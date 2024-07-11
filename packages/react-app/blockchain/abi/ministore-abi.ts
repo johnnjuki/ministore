@@ -73,12 +73,6 @@ export const ministoreAbi = [
         "internalType": "uint256",
         "name": "price",
         "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "points",
-        "type": "uint256"
       }
     ],
     "name": "ProductPurchased",
@@ -105,45 +99,6 @@ export const ministoreAbi = [
     "name": "addProduct",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "allProducts",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "imageIpfsCid",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -198,51 +153,6 @@ export const ministoreAbi = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getAllProducts",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "imageIpfsCid",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address[]",
-            "name": "customers",
-            "type": "address[]"
-          }
-        ],
-        "internalType": "struct MiniStore.Product[]",
-        "name": "",
-        "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -263,7 +173,7 @@ export const ministoreAbi = [
   },
   {
     "inputs": [],
-    "name": "getNumberOfCustomersWithPoints",
+    "name": "getCustomers",
     "outputs": [
       {
         "internalType": "uint256",
@@ -289,11 +199,6 @@ export const ministoreAbi = [
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "_owner",
-        "type": "address"
-      },
       {
         "internalType": "uint256",
         "name": "_productId",
@@ -344,13 +249,7 @@ export const ministoreAbi = [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "name": "getProducts",
     "outputs": [
       {
@@ -460,30 +359,6 @@ export const ministoreAbi = [
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "productCount",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
       {
         "internalType": "uint256",
         "name": "",

@@ -25,7 +25,6 @@ export default function ProductsPage() {
       .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
-    args: [address!!],
   });
 
   const [isMounted, setIsMounted] = useState(false);

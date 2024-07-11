@@ -14,7 +14,7 @@ import useCart from "@/hooks/use-cart";
 export default function ProductPage({
   params,
 }: {
-  params: { slug: string[] };
+  params: { id: string };
 }) {
   const [isMounted, setIsMounted] = useState(false);
   const cart = useCart();
@@ -27,7 +27,7 @@ export default function ProductPage({
     address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProduct",
-    args: [`${params.slug[0]!!}` as `0x${string}`, BigInt(params.slug[1])],
+    args: [BigInt(params.id)],
   });
 
   useEffect(() => {

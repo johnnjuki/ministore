@@ -19,7 +19,7 @@ export default function CustomerPage() {
   } = useReadContract({
     address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
-    functionName: "getAllProducts",
+    functionName: "getProducts",
   });
 
   useEffect(() => {
@@ -43,14 +43,14 @@ export default function CustomerPage() {
           ) : (
             <>
               {products?.length === 0 ? (
-                <div className="flex h-full w-full items-center justify-center text-neutral-500">
+                <div className="flex mt-16 h-full w-full items-center justify-center text-neutral-500">
                   No products found.
                 </div>
               ) : (
                 <div className="grid grid-cols-1 gap-6">
-                  {products?.map((product: Product, index) => (
+                  {products?.slice().reverse().map((product: Product, index) => (
                     <Link
-                      href={`/product/${product.owner}/${product.id}`}
+                      href={`/product/${product.id}`}
                       key={index}
                     >
                       <ProductCard product={product} />

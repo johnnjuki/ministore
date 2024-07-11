@@ -56,7 +56,7 @@ const Checkout = () => {
         disabled={items.length === 0 || isPending}
         className="mt-6 w-full rounded-full"
       >
-        Checkout
+        {isPending ? "Processing..." : "Checkout"}
       </Button>
       {/* {error && <p className="text-red-500 mt-2 text-center">Purchase Failed</p>} */}
       {error && <p className="text-red-500 mt-2 text-center">{error.message}</p>}

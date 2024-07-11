@@ -27,7 +27,6 @@ export default function AdminPage() {
     address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
-    args: [address!!],
   });
 
   useEffect(() => {
