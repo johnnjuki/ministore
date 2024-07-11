@@ -10,7 +10,7 @@ import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@/components/ui/separator";
-import { columns } from "./columns";
+import { productColumns } from "./product-columns";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductsPage() {
@@ -65,7 +65,7 @@ export default function ProductsPage() {
           ) : (
             <DataTable
               searchKey="name"
-              columns={columns}
+              columns={productColumns}
               data={[...products!!]}
             />
           )}

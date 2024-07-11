@@ -1,7 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2 <0.9.0;
 
+import {ERC20} from "./MiniStoreInterfaces.sol";
+
 contract MiniStore {
+
+     address public cUSDTokenAddress;
+
+    constructor(address _cUSDTokenAddress) {
+        cUSDTokenAddress = _cUSDTokenAddress;
+    }
+
     struct Product {
         uint256 id;
         string imageIpfsCid;
@@ -22,6 +31,7 @@ contract MiniStore {
 
     // Mapping to track purchased products by each customer
     mapping(address => Product[]) public purchasedProducts;
+
 
     event ProductAdded(
         address indexed owner,
@@ -84,31 +94,32 @@ contract MiniStore {
         return products[_owner][_productId];
     }
 
-    function purchaseProducts(address[] memory _owners, uint256[] memory _productIds) public payable {
-        require(_owners.length == _productIds.length, "Mismatched owners and product IDs");
+    function purchaseProducts(
+    address[] memory _owners,
+    uint256[] memory _productIds
+) public {
+    require(_owners.length == _productIds.length, "Owners and product IDs length mismatch");
+    ERC20 cUSDToken = ERC20(cUSDTokenAddress);
+    uint256 totalCost = 0;
 
-        uint256 totalCost = 0;
-
-        for (uint256 i = 0; i < _owners.length; i++) {
-            Product storage product = products[_owners[i]][_productIds[i]];
-            require(product.id == _productIds[i], "Product does not exist");
-            totalCost += (product.price * 1 ether);
-        }
-
-        require(msg.value == totalCost, "Incorrect value sent");
-
-        for (uint256 i = 0; i < _owners.length; i++) {
-            Product storage product = products[_owners[i]][_productIds[i]];
-
-            payable(product.owner).transfer(product.price * 1 ether);
-
-            purchasedProducts[msg.sender].push(product);
-
-            product.customers.push(msg.sender);
-
-            emit ProductPurchased(msg.sender, _owners[i], _productIds[i], product.price);
-        }
+    for (uint256 i = 0; i < _productIds.length; i++) {
+        Product storage product = products[_owners[i]][_productIds[i]];
+        require(product.id == _productIds[i], "Product does not exist");
+        totalCost += product.price;
     }
+
+    require(cUSDToken.transferFrom(msg.sender, address(this), totalCost / (10**cUSDToken.decimals())), "Token transfer failed");
+
+    for (uint256 i = 0; i < _productIds.length; i++) {
+        Product storage product = products[_owners[i]][_productIds[i]];
+        require(cUSDToken.transfer(product.owner, product.price / (10**cUSDToken.decimals())), "Token transfer to owner failed");
+        product.customers.push(msg.sender);
+        purchasedProducts[msg.sender].push(product);
+
+        emit ProductPurchased(msg.sender, _owners[i], _productIds[i], product.price);
+    }
+}
+
 
     function getPurchasedProducts(
         address _customer

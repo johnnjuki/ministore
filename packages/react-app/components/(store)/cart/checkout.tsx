@@ -19,8 +19,9 @@ const Checkout = () => {
   const owners = items.map((item) => item.owner as `0x${string}`);
   const productIds = items.map((item) => item.id);
 
-  const totalPriceInWei = Math.ceil(totalPrice * 10**18);
+  // const totalPriceInWei = Math.ceil(totalPrice * 10**18);
 
+  // TODO: Fix: purchaseProduct() only paying the gas fee, without product price
   async function onCheckout() {
     const hash = await writeContractAsync({
       address: process.env
@@ -28,7 +29,6 @@ const Checkout = () => {
       abi: ministoreAbi,
       functionName: "purchaseProducts",
       args: [owners, productIds],
-      value: BigInt(totalPriceInWei),
     });
   
     if (hash) {
@@ -52,7 +52,8 @@ const Checkout = () => {
       >
         Checkout
       </Button>
-      {error && <p className="text-red-500 mt-2 text-center">Purchase Failed</p>}
+      {/* {error && <p className="text-red-500 mt-2 text-center">Purchase Failed</p>} */}
+      {error && <p className="text-red-500 mt-2 text-center">{error.message}</p>}
     </div>
   );
 };

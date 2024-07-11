@@ -1,5 +1,16 @@
 export const ministoreAbi = [
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_cUSDTokenAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -123,6 +134,19 @@ export const ministoreAbi = [
       {
         "internalType": "address",
         "name": "owner",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "cUSDTokenAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
         "type": "address"
       }
     ],
@@ -410,7 +434,7 @@ export const ministoreAbi = [
     ],
     "name": "purchaseProducts",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

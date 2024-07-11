@@ -8,7 +8,7 @@ export type ProductColumn = {
   price: bigint;
 };
 
-export const columns: ColumnDef<ProductColumn>[] = [
+export const productColumns: ColumnDef<ProductColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",
