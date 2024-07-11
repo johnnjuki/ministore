@@ -21,7 +21,8 @@ export default function ProductsPage() {
     isPending,
     error,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env
+      .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
     args: [address!!],
@@ -40,7 +41,7 @@ export default function ProductsPage() {
   return (
     <main className="flex-col space-y-4">
       <Link href="/admin">
-      <ArrowLeft />
+        <ArrowLeft />
       </Link>
       <div className="flex items-center justify-between">
         <Heading
@@ -54,20 +55,29 @@ export default function ProductsPage() {
         </Link>
       </div>
       <Separator />
+
       {!isConnected ? (
         <p className="text-center text-sm text-red-500">
           Please connect your wallet
         </p>
       ) : (
         <>
-          {isPending ? (
-            <Skeleton className="h-[350px] w-full rounded-xl" />
+          {error ? (
+            <p className="text-center text-sm text-red-500">
+              Something went wrong
+            </p>
           ) : (
-            <DataTable
-              searchKey="name"
-              columns={productColumns}
-              data={[...products!!]}
-            />
+            <>
+              {isPending ? (
+                <Skeleton className="h-[350px] w-full rounded-xl" />
+              ) : (
+                <DataTable
+                  searchKey="name"
+                  columns={productColumns}
+                  data={[...products!!]}
+                />
+              )}
+            </>
           )}
         </>
       )}

@@ -19,3 +19,7 @@ interface ERC20 {
         view
         returns (uint256);
 }
+
+interface LoyaltyProgram {
+    function awardPoints(address customer, uint256 points) external;
+}

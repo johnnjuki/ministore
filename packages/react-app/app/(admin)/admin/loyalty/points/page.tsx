@@ -19,7 +19,8 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import { SocialWaysToEarn, socialColumns } from "./social-columns";
-import { purchaseColumns } from "./purchase-columns";
+import { PurchaseWayToEarn, purchaseColumns } from "./purchase-columns";
+import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 
 type Purchase = {
   description: string;
@@ -62,6 +63,56 @@ const socials: Social[] = [
 ];
 
 export default function PointsPage() {
+  const { address, isConnected } = useAccount();
+  const [purchaseWayToEarn, setPurchaseWayToEarn ]= useState<PurchaseWayToEarn>();
+ 
+  const {
+    data: pointsAndCustomers,
+    isPending,
+    error,
+  } = useReadContract({
+    address: process.env
+      .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    abi: ministoreAbi,
+    functionName: "getPointsAndCustomers",
+  });
+
+  useEffect(() => {
+    if (pointsAndCustomers) {
+      setPurchaseWayToEarn({
+        name: "Place an order",
+        points: pointsAndCustomers[0],
+        totalCustomers: pointsAndCustomers[1],
+      });
+    }
+  }, [pointsAndCustomers]);
+
+
+//   if (
+//     isConnected &&
+//     !error &&
+//     !isPending &&
+//     pointsAndCustomers 
+//   ) {
+//     const purchaseWayToEarn: PurchaseWayToEarn = {
+//         name: "Place an order",
+//         points: pointsAndCustomers[0],
+//         totalCustomers: pointsAndCustomers[1],
+//       };
+
+//     //   setPurchaseWayToEarn(purchaseWayToEarn);
+//   }
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div className="flex-col space-y-4">
       <Link href="/admin">
@@ -84,7 +135,35 @@ export default function PointsPage() {
           </p>
         </div>
 
-        <DataTable columns={purchaseColumns} data={[]} />
+        {!isConnected ? (
+          <p className="text-center text-sm text-red-500">
+            Please connect your wallet
+          </p>
+        ) : (
+          <>
+            {error ? (
+              <p className="text-center text-sm text-red-500">
+                Something went wrong
+              </p>
+            ) : (
+              <>
+                {isPending ? (
+                  <Skeleton className="h-[350px] w-full rounded-xl" />
+                ) : (
+                  <>
+                    {purchaseWayToEarn ? (
+                      <>
+                        <DataTable columns={purchaseColumns} data={[purchaseWayToEarn!!]} />
+                      </>
+                    ) : (
+                      <DataTable columns={purchaseColumns} data={[]} />
+                    )}
+                  </>
+                )}
+              </>
+            )}
+          </>
+        )}
       </div>
 
       {/* SOCIAL */}

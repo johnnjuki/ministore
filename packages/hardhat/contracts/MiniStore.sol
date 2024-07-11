@@ -4,8 +4,7 @@ pragma solidity >=0.8.2 <0.9.0;
 import {ERC20} from "./MiniStoreInterfaces.sol";
 
 contract MiniStore {
-
-     address public cUSDTokenAddress;
+    address public cUSDTokenAddress;
 
     constructor(address _cUSDTokenAddress) {
         cUSDTokenAddress = _cUSDTokenAddress;
@@ -32,6 +31,19 @@ contract MiniStore {
     // Mapping to track purchased products by each customer
     mapping(address => Product[]) public purchasedProducts;
 
+    /**
+     * LOYALTY PROGRAM
+     */
+
+    // Mapping to store points for each customer
+    mapping(address => uint256) public customerPoints;
+
+    // Total number of points awarded
+    uint256 public totalPointsAwarded;
+
+    // List of all customers who have points
+    // Change to customers who have purchased
+    address[] public customers;
 
     event ProductAdded(
         address indexed owner,
@@ -45,7 +57,8 @@ contract MiniStore {
         address indexed customer,
         address indexed seller,
         uint256 productId,
-        uint256 price
+        uint256 price,
+        uint256 points
     );
 
     function addProduct(
@@ -95,35 +108,102 @@ contract MiniStore {
     }
 
     function purchaseProducts(
-    address[] memory _owners,
-    uint256[] memory _productIds
-) public {
-    require(_owners.length == _productIds.length, "Owners and product IDs length mismatch");
-    ERC20 cUSDToken = ERC20(cUSDTokenAddress);
-    uint256 totalCost = 0;
+        address[] memory _owners,
+        uint256[] memory _productIds,
+        uint256[] memory _points
+    ) public {
+        require(
+            _owners.length == _productIds.length,
+            "Owners and product IDs length mismatch"
+        );
+        require(
+            _productIds.length == _points.length,
+            "Product IDs and points length mismatch"
+        );
 
-    for (uint256 i = 0; i < _productIds.length; i++) {
-        Product storage product = products[_owners[i]][_productIds[i]];
-        require(product.id == _productIds[i], "Product does not exist");
-        totalCost += product.price;
+        ERC20 cUSDToken = ERC20(cUSDTokenAddress);
+        uint256 totalCost = 0;
+
+        for (uint256 i = 0; i < _productIds.length; i++) {
+            Product storage product = products[_owners[i]][_productIds[i]];
+            require(product.id == _productIds[i], "Product does not exist");
+            totalCost += product.price;
+        }
+
+        require(
+            cUSDToken.transferFrom(
+                msg.sender,
+                address(this),
+                totalCost / (10 ** cUSDToken.decimals())
+            ),
+            "Token transfer failed"
+        );
+
+        for (uint256 i = 0; i < _productIds.length; i++) {
+            Product storage product = products[_owners[i]][_productIds[i]];
+            require(
+                cUSDToken.transfer(
+                    product.owner,
+                    product.price / (10 ** cUSDToken.decimals())
+                ),
+                "Token transfer to owner failed"
+            );
+            product.customers.push(msg.sender);
+            purchasedProducts[msg.sender].push(product);
+
+            // Award points
+            uint256 points = _points[i];
+            customerPoints[msg.sender] += points;
+            totalPointsAwarded += points;
+
+            // Add customer to list if they're a new customer
+            bool isCustomer = false;
+            for (uint256 j = 0; j < customers.length; j++) {
+                if (customers[j] == msg.sender) {
+                    isCustomer = true;
+                    break;
+                }
+            }
+
+            if (!isCustomer) {
+                customers.push(msg.sender);
+            }
+
+            emit ProductPurchased(
+                msg.sender,
+                _owners[i],
+                _productIds[i],
+                product.price,
+                points
+            );
+        }
     }
-
-    require(cUSDToken.transferFrom(msg.sender, address(this), totalCost / (10**cUSDToken.decimals())), "Token transfer failed");
-
-    for (uint256 i = 0; i < _productIds.length; i++) {
-        Product storage product = products[_owners[i]][_productIds[i]];
-        require(cUSDToken.transfer(product.owner, product.price / (10**cUSDToken.decimals())), "Token transfer to owner failed");
-        product.customers.push(msg.sender);
-        purchasedProducts[msg.sender].push(product);
-
-        emit ProductPurchased(msg.sender, _owners[i], _productIds[i], product.price);
-    }
-}
-
 
     function getPurchasedProducts(
         address _customer
     ) public view returns (Product[] memory) {
         return purchasedProducts[_customer];
+    }
+
+    /**
+     * LOYALTY PROGRAM FUNCTIONS
+     */
+
+    function getCustomerPoints(
+        address _customer
+    ) external view returns (uint256) {
+        return customerPoints[_customer];
+    }
+
+    function getTotalPointsAwarded() external view returns (uint256) {
+        return totalPointsAwarded;
+    }
+
+    function getNumberOfCustomersWithPoints() external view returns (uint256) {
+        return customers.length;
+    }
+
+    function getPointsAndCustomers() external view returns (uint256[2] memory) {
+        return [totalPointsAwarded, customers.length];
     }
 }

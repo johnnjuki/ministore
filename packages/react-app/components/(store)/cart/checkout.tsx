@@ -15,9 +15,15 @@ const Checkout = () => {
   const totalPrice = items.reduce((total, item) => {
     return total + Number(BigInt(item.price).toString());
   }, 0);
+  
+  // const totalPoints = items.reduce((total, item) => {
+  //   return total + Number(BigInt(item.price).toString()) * 10;
+  // }, 0)
+
 
   const owners = items.map((item) => item.owner as `0x${string}`);
   const productIds = items.map((item) => item.id);
+  const totalPoints = items.map((item) => BigInt(Number(item.price) * 10))
 
   // const totalPriceInWei = Math.ceil(totalPrice * 10**18);
 
@@ -28,7 +34,7 @@ const Checkout = () => {
         .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
       abi: ministoreAbi,
       functionName: "purchaseProducts",
-      args: [owners, productIds],
+      args: [owners, productIds, totalPoints],
     });
   
     if (hash) {

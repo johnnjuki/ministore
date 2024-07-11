@@ -2,13 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-export type PurchaseWaysToEarn = {
+export type PurchaseWayToEarn = {
   name: string;
   points: bigint;
   totalCustomers: bigint;
 };
 
-export const purchaseColumns: ColumnDef<PurchaseWaysToEarn>[] = [
+export const purchaseColumns: ColumnDef<PurchaseWayToEarn>[] = [
   {
     accessorKey: "name",
     header: "Ways to earn",
