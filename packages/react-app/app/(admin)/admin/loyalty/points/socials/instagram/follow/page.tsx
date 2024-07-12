@@ -38,7 +38,7 @@ export default function InstagramFollowPage() {
         abi: ministoreAbi,
         functionName: "addSocialWayToEarn",
         args: [
-          "Follow on Instagram",
+          "Follow us on Instagram",
           data.url as string,
           BigInt(data.points as string),
         ],
@@ -61,7 +61,7 @@ export default function InstagramFollowPage() {
       </Link>
 
       <Heading
-        title="Follow us on Instagram"
+        title="Follow on Instagram"
         description="Provide the URL of your Instagram business page where your customers can
         follow you"
       />
