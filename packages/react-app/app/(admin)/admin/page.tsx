@@ -125,6 +125,7 @@ export default function AdminPage() {
                         <ChevronRight className="h-4 w-4 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
+                        {/* TODO: show the number of customer rewarded */}
                         </CardContent>
                     </Card>
                   </Link>

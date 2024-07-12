@@ -1,479 +1,652 @@
 export const ministoreAbi = [
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "_cUSDTokenAddress",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "_cUSDTokenAddress",
+        type: "address",
+      },
     ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    stateMutability: "nonpayable",
+    type: "constructor",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "owner",
+        type: "address",
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "productId",
-        "type": "uint256"
+        indexed: false,
+        internalType: "uint256",
+        name: "productId",
+        type: "uint256",
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "imageIpfsCid",
-        "type": "string"
+        indexed: false,
+        internalType: "string",
+        name: "imageIpfsCid",
+        type: "string",
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
+        indexed: false,
+        internalType: "string",
+        name: "name",
+        type: "string",
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      }
+        indexed: false,
+        internalType: "uint256",
+        name: "price",
+        type: "uint256",
+      },
     ],
-    "name": "ProductAdded",
-    "type": "event"
+    name: "ProductAdded",
+    type: "event",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "customer",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "customer",
+        type: "address",
       },
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "seller",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "seller",
+        type: "address",
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "productId",
-        "type": "uint256"
+        indexed: false,
+        internalType: "uint256",
+        name: "productId",
+        type: "uint256",
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      }
+        indexed: false,
+        internalType: "uint256",
+        name: "price",
+        type: "uint256",
+      },
     ],
-    "name": "ProductPurchased",
-    "type": "event"
+    name: "ProductPurchased",
+    type: "event",
   },
   {
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "internalType": "string",
-        "name": "_imageIpfsCid",
-        "type": "string"
+        indexed: false,
+        internalType: "string",
+        name: "name",
+        type: "string",
       },
       {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
+        indexed: false,
+        internalType: "string",
+        name: "url",
+        type: "string",
       },
       {
-        "internalType": "uint256",
-        "name": "_price",
-        "type": "uint256"
-      }
+        indexed: false,
+        internalType: "uint256",
+        name: "points",
+        type: "uint256",
+      },
     ],
-    "name": "addProduct",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "SocialWayToEarnAdded",
+    type: "event",
   },
   {
-    "inputs": [],
-    "name": "cUSDTokenAddress",
-    "outputs": [
+    anonymous: false,
+    inputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        indexed: true,
+        internalType: "address",
+        name: "customer",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "points",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    name: "SocialWayToEarnCompleted",
+    type: "event",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "customerPoints",
-    "outputs": [
+        internalType: "string",
+        name: "_imageIpfsCid",
+        type: "string",
+      },
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "string",
+        name: "_name",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "_price",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    name: "addProduct",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "customers",
-    "outputs": [
+        internalType: "string",
+        name: "_name",
+        type: "string",
+      },
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "string",
+        name: "_url",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "_points",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    name: "addSocialWayToEarn",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [],
+    name: "cUSDTokenAddress",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "_customer",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "name": "getCustomerPoints",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "getCustomers",
-    "outputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "_socialWayToEarnId",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    name: "completeSocialWayToEarn",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "getPointsAndCustomers",
-    "outputs": [
+    inputs: [
       {
-        "internalType": "uint256[2]",
-        "name": "",
-        "type": "uint256[2]"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    name: "customerPoints",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "_productId",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "name": "getProduct",
-    "outputs": [
+    name: "customers",
+    outputs: [
       {
-        "components": [
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_customer",
+        type: "address",
+      },
+    ],
+    name: "getCustomerPoints",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getCustomers",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_productId",
+        type: "uint256",
+      },
+    ],
+    name: "getProduct",
+    outputs: [
+      {
+        components: [
           {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
           },
           {
-            "internalType": "string",
-            "name": "imageIpfsCid",
-            "type": "string"
+            internalType: "string",
+            name: "imageIpfsCid",
+            type: "string",
           },
           {
-            "internalType": "string",
-            "name": "name",
-            "type": "string"
+            internalType: "string",
+            name: "name",
+            type: "string",
           },
           {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
           },
           {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
+            internalType: "address",
+            name: "owner",
+            type: "address",
           },
           {
-            "internalType": "address[]",
-            "name": "customers",
-            "type": "address[]"
-          }
+            internalType: "address[]",
+            name: "customers",
+            type: "address[]",
+          },
         ],
-        "internalType": "struct MiniStore.Product",
-        "name": "",
-        "type": "tuple"
-      }
+        internalType: "struct MiniStore.Product",
+        name: "",
+        type: "tuple",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "getProducts",
-    "outputs": [
+    inputs: [],
+    name: "getProducts",
+    outputs: [
       {
-        "components": [
+        components: [
           {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
           },
           {
-            "internalType": "string",
-            "name": "imageIpfsCid",
-            "type": "string"
+            internalType: "string",
+            name: "imageIpfsCid",
+            type: "string",
           },
           {
-            "internalType": "string",
-            "name": "name",
-            "type": "string"
+            internalType: "string",
+            name: "name",
+            type: "string",
           },
           {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
           },
           {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
+            internalType: "address",
+            name: "owner",
+            type: "address",
           },
           {
-            "internalType": "address[]",
-            "name": "customers",
-            "type": "address[]"
-          }
+            internalType: "address[]",
+            name: "customers",
+            type: "address[]",
+          },
         ],
-        "internalType": "struct MiniStore.Product[]",
-        "name": "",
-        "type": "tuple[]"
-      }
+        internalType: "struct MiniStore.Product[]",
+        name: "",
+        type: "tuple[]",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [],
+    name: "getPurchasePointsAndCustomers",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "_customer",
-        "type": "address"
-      }
+        internalType: "uint256[2]",
+        name: "",
+        type: "uint256[2]",
+      },
     ],
-    "name": "getPurchasedProducts",
-    "outputs": [
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
       {
-        "components": [
+        internalType: "address",
+        name: "_customer",
+        type: "address",
+      },
+    ],
+    name: "getPurchasedProducts",
+    outputs: [
+      {
+        components: [
           {
-            "internalType": "uint256",
-            "name": "id",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "id",
+            type: "uint256",
           },
           {
-            "internalType": "string",
-            "name": "imageIpfsCid",
-            "type": "string"
+            internalType: "string",
+            name: "imageIpfsCid",
+            type: "string",
           },
           {
-            "internalType": "string",
-            "name": "name",
-            "type": "string"
+            internalType: "string",
+            name: "name",
+            type: "string",
           },
           {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
           },
           {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
+            internalType: "address",
+            name: "owner",
+            type: "address",
           },
           {
-            "internalType": "address[]",
-            "name": "customers",
-            "type": "address[]"
-          }
+            internalType: "address[]",
+            name: "customers",
+            type: "address[]",
+          },
         ],
-        "internalType": "struct MiniStore.Product[]",
-        "name": "",
-        "type": "tuple[]"
-      }
+        internalType: "struct MiniStore.Product[]",
+        name: "",
+        type: "tuple[]",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "getTotalPointsAwarded",
-    "outputs": [
+    inputs: [],
+    name: "getSocialWaysToEarn",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        components: [
+          {
+            internalType: "string",
+            name: "name",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "url",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "points",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "numberOfUsersRewarded",
+            type: "uint256",
+          },
+          {
+            internalType: "address[]",
+            name: "usersRewarded",
+            type: "address[]",
+          },
+        ],
+        internalType: "struct MiniStore.SocialWayToEarn[]",
+        name: "",
+        type: "tuple[]",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [],
+    name: "getTotalPointsAwarded",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "name": "products",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "imageIpfsCid",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "address[]",
-        "name": "_owners",
-        "type": "address[]"
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
-      {
-        "internalType": "uint256[]",
-        "name": "_productIds",
-        "type": "uint256[]"
-      },
-      {
-        "internalType": "uint256[]",
-        "name": "_points",
-        "type": "uint256[]"
-      }
     ],
-    "name": "purchaseProducts",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "products",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "imageIpfsCid",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "price",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [],
+    name: "purchasePointsAwarded",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
     ],
-    "name": "purchasedProducts",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "id",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "imageIpfsCid",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "price",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "totalPointsAwarded",
-    "outputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "address[]",
+        name: "_owners",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_productIds",
+        type: "uint256[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "_points",
+        type: "uint256[]",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
+    name: "purchaseProducts",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "purchasedProducts",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "imageIpfsCid",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "price",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "socialWaysToEarn",
+    outputs: [
+      {
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "url",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "points",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "numberOfUsersRewarded",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "totalPointsAwarded",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
 ] as const;

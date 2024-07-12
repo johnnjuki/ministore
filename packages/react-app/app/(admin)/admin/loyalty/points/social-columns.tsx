@@ -6,7 +6,7 @@ export type SocialWaysToEarn = {
   name: string;
   url: string;
   points: bigint;
-  totalCustomers: bigint;
+  numberOfUsersRewarded: bigint;
 };
 
 export const socialColumns: ColumnDef<SocialWaysToEarn>[] = [
@@ -15,8 +15,7 @@ export const socialColumns: ColumnDef<SocialWaysToEarn>[] = [
     header: "Ways to earn",
   },
   {
-    accessorKey: "totalCustomers",
+    accessorKey: "numberOfUsersRewarded",
     header: "Users rewarded",
   },
-  
 ];

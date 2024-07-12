@@ -25,14 +25,6 @@ contract MiniStore {
 
     address[] public customers;
 
-    /**
-     * LOYALTY PROGRAM VARIABLES
-     */
-
-    mapping(address => uint256) public customerPoints;
-
-    uint256 public totalPointsAwarded;
-
     event ProductAdded(
         address indexed owner,
         uint256 productId,
@@ -46,6 +38,34 @@ contract MiniStore {
         address indexed seller,
         uint256 productId,
         uint256 price
+    );
+
+    /**
+     * LOYALTY PROGRAM VARIABLES
+     */
+
+    mapping(address => uint256) public customerPoints;
+
+    uint256 public purchasePointsAwarded;
+
+    uint256 public totalPointsAwarded;
+
+    struct SocialWayToEarn {
+        string name;
+        string url;
+        uint256 points;
+        uint256 numberOfUsersRewarded;
+        address[] usersRewarded;
+    }
+
+    SocialWayToEarn[] public socialWaysToEarn;
+
+    event SocialWayToEarnAdded(string name, string url, uint256 points);
+
+    event SocialWayToEarnCompleted(
+        address indexed customer,
+        string name,
+        uint256 points
     );
 
     function addProduct(
@@ -139,6 +159,7 @@ contract MiniStore {
             // Award points
             uint256 points = _points[i];
             customerPoints[msg.sender] += points;
+            purchasePointsAwarded += points;
             totalPointsAwarded += points;
 
             emit ProductPurchased(
@@ -174,7 +195,59 @@ contract MiniStore {
         return customers.length;
     }
 
-    function getPointsAndCustomers() external view returns (uint256[2] memory) {
-        return [totalPointsAwarded, customers.length];
+    function getPurchasePointsAndCustomers() external view returns (uint256[2] memory) {
+        return [purchasePointsAwarded, customers.length];
+    }
+
+    /**
+     * SOCIAL EARNING FUNCTIONS
+     */
+
+    function addSocialWayToEarn(
+        string memory _name,
+        string memory _url,
+        uint256 _points
+    ) public {
+        SocialWayToEarn memory newSocialWayToEarn = SocialWayToEarn({
+            name: _name,
+            url: _url,
+            points: _points,
+            numberOfUsersRewarded: 0,
+            usersRewarded: new address[](0)
+        });
+
+        socialWaysToEarn.push(newSocialWayToEarn);
+
+        emit SocialWayToEarnAdded(_name, _url, _points);
+    }
+
+    function getSocialWaysToEarn()
+        public
+        view
+        returns (SocialWayToEarn[] memory)
+    {
+        return socialWaysToEarn;
+    }
+
+    function completeSocialWayToEarn(uint256 _socialWayToEarnId) public {
+        require(
+            _socialWayToEarnId < socialWaysToEarn.length,
+            "Social way to earn does not exist"
+        );
+
+        SocialWayToEarn storage socialWayToEarn = socialWaysToEarn[
+            _socialWayToEarnId
+        ];
+
+        socialWayToEarn.numberOfUsersRewarded++;
+        socialWayToEarn.usersRewarded.push(msg.sender);
+        customerPoints[msg.sender] += socialWayToEarn.points;
+        totalPointsAwarded += socialWayToEarn.points;
+
+        emit SocialWayToEarnCompleted(
+            msg.sender,
+            socialWayToEarn.name,
+            socialWayToEarn.points
+        );
     }
 }

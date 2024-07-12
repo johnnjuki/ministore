@@ -33,17 +33,6 @@ type Social = {
   href: string;
 };
 
-const purchases: Purchase[] = [
-  {
-    description: "Place an order",
-    href: `/admin/loyalty/points/purchases/order`,
-  },
-  {
-    description: "Review a product",
-    href: `/admin/loyalty/points/purchases/review`,
-  },
-];
-
 const socials: Social[] = [
   {
     icon: <Facebook />,
@@ -53,55 +42,49 @@ const socials: Social[] = [
   {
     icon: <Twitter />,
     description: "Follow on X",
-    href: `/amdin/loyalty/points/socials/x/follow`,
+    href: `/admin/loyalty/points/socials/x/follow`,
   },
   {
     icon: <Instagram />,
     description: "Follow on Instagram",
-    href: `/amdin/loyalty/points/socials/instagram/follow`,
+    href: `/admin/loyalty/points/socials/instagram/follow`,
   },
 ];
 
 export default function PointsPage() {
   const { address, isConnected } = useAccount();
-  const [purchaseWayToEarn, setPurchaseWayToEarn ]= useState<PurchaseWayToEarn>();
- 
+  const [purchaseWayToEarn, setPurchaseWayToEarn] =
+    useState<PurchaseWayToEarn>();
+
   const {
-    data: pointsAndCustomers,
-    isPending,
-    error,
+    data: purchasePointsAndCustomers,
+    isPending: purchaseWaysToEarnPending,
+    error: purchaseWaysToEarnError,
   } = useReadContract({
-    address: process.env
-      .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
-    functionName: "getPointsAndCustomers",
+    functionName: "getPurchasePointsAndCustomers",
+  });
+
+  const {
+    data: socialWaysToEarn,
+    isPending: socialWaysToEarnPending,
+    error: socialWaysToEarnError,
+  } = useReadContract({
+    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    abi: ministoreAbi,
+    functionName: "getSocialWaysToEarn",
   });
 
   useEffect(() => {
-    if (pointsAndCustomers) {
+    if (purchasePointsAndCustomers) {
       setPurchaseWayToEarn({
         name: "Place an order",
-        points: pointsAndCustomers[0],
-        totalCustomers: pointsAndCustomers[1],
+        points: purchasePointsAndCustomers[0],
+        totalCustomers: purchasePointsAndCustomers[1],
       });
     }
-  }, [pointsAndCustomers]);
-
-
-//   if (
-//     isConnected &&
-//     !error &&
-//     !isPending &&
-//     pointsAndCustomers 
-//   ) {
-//     const purchaseWayToEarn: PurchaseWayToEarn = {
-//         name: "Place an order",
-//         points: pointsAndCustomers[0],
-//         totalCustomers: pointsAndCustomers[1],
-//       };
-
-//     //   setPurchaseWayToEarn(purchaseWayToEarn);
-//   }
+  }, [purchasePointsAndCustomers]);
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -141,19 +124,22 @@ export default function PointsPage() {
           </p>
         ) : (
           <>
-            {error ? (
+            {purchaseWaysToEarnError ? (
               <p className="text-center text-sm text-red-500">
                 Something went wrong
               </p>
             ) : (
               <>
-                {isPending ? (
-                  <Skeleton className="h-[350px] w-full rounded-xl" />
+                {purchaseWaysToEarnPending ? (
+                  <Skeleton className="h-[200px] w-full rounded-xl" />
                 ) : (
                   <>
                     {purchaseWayToEarn ? (
                       <>
-                        <DataTable columns={purchaseColumns} data={[purchaseWayToEarn!!]} />
+                        <DataTable
+                          columns={purchaseColumns}
+                          data={[purchaseWayToEarn!!]}
+                        />
                       </>
                     ) : (
                       <DataTable columns={purchaseColumns} data={[]} />
@@ -175,37 +161,67 @@ export default function PointsPage() {
           </p>
         </div>
 
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="secondary" className="mb-2 w-fit" size="sm">
-              Add ways to earn
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Social</DialogTitle>
-            </DialogHeader>
-            <div className="flex flex-col space-y-6">
-              {/* {socials
-                  .filter((social) => {
-                    return !waysToEarn!!.some(
-                      (wayToEarn) => wayToEarn.name === social.description,
-                    );
-                  })
-                  .map((social, index) => (
-                    <Link href={social.href} key={index} className="">
-                      <div className="flex items-center space-x-5">
-                        {social.icon}
-                        <span>{social.description}</span>
-                      </div>
-                      <Separator className="mt-4" />
-                    </Link>
-                  ))} */}
-            </div>
-          </DialogContent>
-        </Dialog>
+        {!isConnected ? (
+          <p className="text-center text-sm text-red-500">
+            Please connect your wallet
+          </p>
+        ) : (
+          <>
+            {socialWaysToEarnError ? (
+              <p className="text-center text-sm text-red-500">
+                Something went wrong
+              </p>
+            ) : (
+              <>
+                {socialWaysToEarnPending ? (
+                  <Skeleton className="h-[200px] w-full rounded-xl" />
+                ) : (
+                  <>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="secondary"
+                          className="mb-2 w-fit"
+                          size="sm"
+                        >
+                          Add ways to earn
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Social</DialogTitle>
+                        </DialogHeader>
+                        <div className="flex flex-col space-y-6">
+                          {socials
+                            .filter((social) => {
+                              return !socialWaysToEarn!!.some(
+                                (wayToEarn) =>
+                                  wayToEarn.name === social.description,
+                              );
+                            })
+                            .map((social, index) => (
+                              <Link href={social.href} key={index} className="">
+                                <div className="flex items-center space-x-5">
+                                  {social.icon}
+                                  <span>{social.description}</span>
+                                </div>
+                                <Separator className="mt-4" />
+                              </Link>
+                            ))}
+                        </div>
+                      </DialogContent>
+                    </Dialog>
 
-        <DataTable columns={socialColumns} data={[]} />
+                    <DataTable
+                      columns={socialColumns}
+                      data={[...socialWaysToEarn]}
+                    />
+                  </>
+                )}
+              </>
+            )}
+          </>
+        )}
       </div>
     </div>
   );
