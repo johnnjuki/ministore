@@ -7,6 +7,8 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAccount, useWriteContract } from "wagmi";
 import * as z from "zod";
+import Link from "next/link";
+import { ArrowLeft, Plus } from "lucide-react";
 
 import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import { Heading } from "@/components/heading";
@@ -51,6 +53,14 @@ export default function NewProductPage() {
       toast.error("Please wait for the product image to upload");
       return;
     }
+
+    const allowedAddresses = ["0x4a41ef458562256170afFbeB6fFC97eA80BE34cB" as `0x${string}`, "0x72033384f7d07A490aeAdf4Bd258fbf28a933e52" as `0x${string}`];
+
+    if (!allowedAddresses.includes(address!!)) {
+      toast.error("You're allowed to explore the admin dashboard but not adding products 🙂");
+      return;
+    }
+
     try {
       const hash = await writeContractAsync({
         address: process.env
@@ -101,6 +111,9 @@ export default function NewProductPage() {
 
   return (
     <div className="flex-col space-y-4">
+       <Link href="/admin/products">
+        <ArrowLeft />
+      </Link>
       <Heading title="Add Product" description="Add a new product" />
       <Separator />
       {!isConnected ? (

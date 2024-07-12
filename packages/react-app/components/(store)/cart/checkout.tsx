@@ -15,20 +15,26 @@ const Checkout = () => {
   const totalPrice = items.reduce((total, item) => {
     return total + Number(BigInt(item.price).toString());
   }, 0);
+  
+  // const totalPoints = items.reduce((total, item) => {
+  //   return total + Number(BigInt(item.price).toString()) * 10;
+  // }, 0)
+
 
   const owners = items.map((item) => item.owner as `0x${string}`);
   const productIds = items.map((item) => item.id);
+  const totalPoints = items.map((item) => BigInt(Number(item.price) * 10))
 
-  const totalPriceInWei = Math.ceil(totalPrice * 10**18);
+  // const totalPriceInWei = Math.ceil(totalPrice * 10**18);
 
+  // TODO: Fix: purchaseProduct() only paying the gas fee, without product price
   async function onCheckout() {
     const hash = await writeContractAsync({
       address: process.env
         .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
       abi: ministoreAbi,
       functionName: "purchaseProducts",
-      args: [owners, productIds],
-      value: BigInt(totalPriceInWei),
+      args: [owners, productIds, totalPoints],
     });
   
     if (hash) {
@@ -50,9 +56,10 @@ const Checkout = () => {
         disabled={items.length === 0 || isPending}
         className="mt-6 w-full rounded-full"
       >
-        Checkout
+        {isPending ? "Processing..." : "Checkout"}
       </Button>
-      {error && <p className="text-red-500 mt-2 text-center">Purchase Failed</p>}
+      {/* {error && <p className="text-red-500 mt-2 text-center">Purchase Failed</p>} */}
+      {error && <p className="text-red-500 mt-2 text-center">{error.message}</p>}
     </div>
   );
 };

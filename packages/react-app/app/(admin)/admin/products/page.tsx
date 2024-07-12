@@ -10,7 +10,7 @@ import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@/components/ui/separator";
-import { columns } from "./columns";
+import { productColumns } from "./product-columns";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductsPage() {
@@ -21,10 +21,10 @@ export default function ProductsPage() {
     isPending,
     error,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env
+      .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
-    args: [address!!],
   });
 
   const [isMounted, setIsMounted] = useState(false);
@@ -40,7 +40,7 @@ export default function ProductsPage() {
   return (
     <main className="flex-col space-y-4">
       <Link href="/admin">
-      <ArrowLeft />
+        <ArrowLeft />
       </Link>
       <div className="flex items-center justify-between">
         <Heading
@@ -54,20 +54,29 @@ export default function ProductsPage() {
         </Link>
       </div>
       <Separator />
+
       {!isConnected ? (
         <p className="text-center text-sm text-red-500">
           Please connect your wallet
         </p>
       ) : (
         <>
-          {isPending ? (
-            <Skeleton className="h-[350px] w-full rounded-xl" />
+          {error ? (
+            <p className="text-center text-sm text-red-500">
+              Something went wrong
+            </p>
           ) : (
-            <DataTable
-              searchKey="name"
-              columns={columns}
-              data={[...products!!]}
-            />
+            <>
+              {isPending ? (
+                <Skeleton className="h-[350px] w-full rounded-xl" />
+              ) : (
+                <DataTable
+                  searchKey="name"
+                  columns={productColumns}
+                  data={[...products!!]}
+                />
+              )}
+            </>
           )}
         </>
       )}

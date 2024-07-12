@@ -1,3 +1,4 @@
+import LoyaltyDropdownMenu from "@/components/(store)/loyalty-dropdown-menu";
 import Navbar from "@/components/navbar";
 
 export default function CustomerLayout({
@@ -6,9 +7,12 @@ export default function CustomerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="min-w-[384px]">
       <Navbar />
       {children}
+      <div className="fixed bottom-0 right-0 mb-6 mr-5">
+        <LoyaltyDropdownMenu />
+      </div>
     </div>
   );
 }

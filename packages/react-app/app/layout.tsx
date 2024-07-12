@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${urbanist.className} mx-auto p-2 max-w-sm`}>
+      <body className={`${urbanist.className} mx-auto p-3 max-w-sm`}>
         <BlockchainProviders>
           <Header />
           {children}

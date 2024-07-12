@@ -1,9 +1,9 @@
-const hre = require('hardhat');
+const hre = require("hardhat");
 
 async function main() {
   await hre.run("compile");
 
-  const miniStore = await hre.ethers.deployContract('MiniStore');
+  const miniStore = await hre.ethers.deployContract("MiniStore");
   await miniStore.waitForDeployment();
   console.log(`MiniStore deployed to ${miniStore.target}`);
 }

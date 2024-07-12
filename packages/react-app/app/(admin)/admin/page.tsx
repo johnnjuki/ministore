@@ -27,7 +27,6 @@ export default function AdminPage() {
     address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
-    args: [address!!],
   });
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export default function AdminPage() {
 
   return (
     <div className="flex-col">
-      <div className="space-y-4 pt-6">
+      <div className="space-y-4">
         <Heading title="Dashboard" description="Manage your store" />
         <Separator />
 
@@ -63,7 +62,7 @@ export default function AdminPage() {
                       <DollarSign className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">
+                      <div className="text-2xl font-semibold">
                         $
                         {products?.reduce(
                           (total, product) =>
@@ -83,7 +82,7 @@ export default function AdminPage() {
                       <CreditCard className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold">
+                      <div className="text-2xl font-semibold">
                         {products?.reduce(
                           (total, product) => total + product.customers.length,
                           0,
@@ -93,14 +92,14 @@ export default function AdminPage() {
                   </Card>
                 </div>
                 <div>
-                  <div className="text-lg font-medium">Products</div>
-                  {/* <p className=" text-xs text-muted-foreground">Manage products</p> */}
+                  <div className="text-lg font-medium text-muted-foreground">Products</div>
                   <Link href="/admin/products">
                     <Card className="mt-2 bg-muted">
                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
                           Products In Stock
                         </CardTitle>
+                        {/* // TODO: Animate this Icon */}
                         <ChevronRight className="h-4 w-4 text-muted-foreground" />
                       </CardHeader>
                       <CardContent>
@@ -110,6 +109,27 @@ export default function AdminPage() {
                       </CardContent>
                     </Card>
                   </Link>
+                </div>
+                <div>
+                  <div className="text-lg font-medium text-muted-foreground">Loyalty Program</div>
+
+                  {/* TODO: Add points count, and number of customers rewarded */}
+                  <Link href="/admin/loyalty/points">
+                    <Card className="mt-2 bg-muted">
+                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        {/* Add badge showing active*/}
+                        <CardTitle className="text-lg font-medium">
+                          Points
+                        </CardTitle>
+                        {/* // TODO: Animate this Icon */}
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      </CardHeader>
+                      <CardContent>
+                        {/* TODO: show the number of customer rewarded */}
+                        </CardContent>
+                    </Card>
+                  </Link>
+
                 </div>
               </div>
             )}
