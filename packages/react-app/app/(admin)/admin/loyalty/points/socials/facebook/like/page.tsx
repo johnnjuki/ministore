@@ -38,7 +38,7 @@ export default function FacebookLikePage() {
         abi: ministoreAbi,
         functionName: "addSocialWayToEarn",
         args: [
-          "Like & follow on Facebook",
+          "Like & follow us on Facebook",
           data.url as string,
           BigInt(data.points as string),
         ],

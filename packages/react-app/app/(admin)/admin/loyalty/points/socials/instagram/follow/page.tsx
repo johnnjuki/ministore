@@ -61,7 +61,7 @@ export default function InstagramFollowPage() {
       </Link>
 
       <Heading
-        title="Follow on Instagram"
+        title="Follow us on Instagram"
         description="Provide the URL of your Instagram business page where your customers can
         follow you"
       />

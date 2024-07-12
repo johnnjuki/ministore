@@ -41,7 +41,7 @@ export default function XFollowPage() {
         abi: ministoreAbi,
         functionName: "addSocialWayToEarn",
         args: [
-          "Follow on X",
+          "Follow us on X",
           data.url as string,
           BigInt(data.points as string),
         ],
