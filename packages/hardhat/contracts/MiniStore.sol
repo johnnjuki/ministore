@@ -1,14 +1,16 @@
-// SPDX-License-Identifier: MIT
-pragma solidity >=0.8.2 <0.9.0;
+// SPDX-License-Identifier: GPL-3.0
 
-import {ERC20} from "./MiniStoreInterfaces.sol";
+pragma solidity ^0.8.26;
 
 contract MiniStore {
-    address public cUSDTokenAddress;
+    address public cUSDTokenAddress =
+        0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
 
-    constructor(address _cUSDTokenAddress) {
-        cUSDTokenAddress = _cUSDTokenAddress;
-    }
+    // constructor(address _cUSDTokenAddress) {
+    //     cUSDTokenAddress = _cUSDTokenAddress;
+    // }
+
+    ERC20 cUSDToken = ERC20(cUSDTokenAddress);
 
     struct Product {
         uint256 id;
@@ -113,7 +115,6 @@ contract MiniStore {
             "Owners and points length mismatch"
         );
 
-        ERC20 cUSDToken = ERC20(cUSDTokenAddress);
         uint256 totalCost = 0;
 
         for (uint256 i = 0; i < _productIds.length; i++) {
@@ -250,4 +251,23 @@ contract MiniStore {
             socialWayToEarn.points
         );
     }
+}
+
+interface ERC20 {
+    function transferFrom(
+        address sender,
+        address recipient,
+        uint256 amount
+    ) external returns (bool);
+
+    function decimals() external view returns (uint8);
+
+    function transfer(address to, uint256 amount) external returns (bool);
+
+    function approve(address spender, uint256 amount) external returns (bool);
+
+    function allowance(
+        address owner,
+        address spender
+    ) external view returns (uint256);
 }
