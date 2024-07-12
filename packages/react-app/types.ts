@@ -5,3 +5,9 @@ export type Product = {
   price: bigint;
   owner: string;
 };
+
+export type Social = {
+  icon: React.ReactElement;
+  description: string;
+  href: string;
+};

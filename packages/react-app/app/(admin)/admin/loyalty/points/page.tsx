@@ -1,10 +1,11 @@
 "use client";
 
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { ArrowLeft, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
 
+import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
@@ -18,20 +19,9 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Facebook, Instagram, Twitter } from "lucide-react";
-import { SocialWaysToEarn, socialColumns } from "./social-columns";
 import { PurchaseWayToEarn, purchaseColumns } from "./purchase-columns";
-import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
-
-type Purchase = {
-  description: string;
-  href: string;
-};
-
-type Social = {
-  icon: React.ReactElement;
-  description: string;
-  href: string;
-};
+import { socialColumns } from "./social-columns";
+import { Social } from "@/types";
 
 const socials: Social[] = [
   {

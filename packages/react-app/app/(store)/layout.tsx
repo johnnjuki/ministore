@@ -1,5 +1,5 @@
+import LoyaltyDropdownMenu from "@/components/(store)/loyalty-dropdown-menu";
 import Navbar from "@/components/navbar";
-import { Gift } from "lucide-react";
 
 export default function CustomerLayout({
   children,
@@ -7,11 +7,11 @@ export default function CustomerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="min-w-[384px]">
       <Navbar />
       {children}
-      <div className="w-sm fixed bottom-0 right-0 mb-6 mr-5">
-        <Gift size={30}  />
+      <div className="fixed bottom-0 right-0 mb-6 mr-5">
+        <LoyaltyDropdownMenu />
       </div>
     </div>
   );
