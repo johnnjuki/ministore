@@ -30,7 +30,7 @@ const CartItem = ({ product }: { product: Product }) => {
           <div className="flex justify-between">
             <p className="text-lg font-semibold">{product.name}</p>
           </div>
-          <p className="mt-2 text-sm text-gray-500">
+          <p className="mt-2 text-sm ">
             ${BigInt(product.price).toString()}
           </p>
         </div>
