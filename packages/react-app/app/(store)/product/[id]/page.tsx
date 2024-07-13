@@ -54,7 +54,7 @@ export default function ProductPage({
             </div>
           ) : (
             <div className="">
-              <div className="relative aspect-square rounded-xl bg-gray-100">
+              <div className="relative aspect-square rounded-xl">
                 <Image
                   src={`https://${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${product.imageIpfsCid}`}
                   alt={product.name}
@@ -63,10 +63,10 @@ export default function ProductPage({
                 />
               </div>
               <div className="mt-10">
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold">
                   {product?.name}
                 </h1>
-                <p className="mt-2 text-xl text-gray-500">
+                <p className="mt-2 text-xl">
                   ${BigInt(product.price).toString()}
                 </p>
                 <Separator className="my-4" />

@@ -44,11 +44,11 @@ const Checkout = () => {
   }
 
   return (
-    <div className="mt-16 rounded-lg bg-gray-50 px-4 py-6">
+    <div className="mt-16 rounded-lg px-4 py-6">
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <p className="text-base font-medium text-gray-900">Order total</p>
-          <p className="text-sm text-gray-500">${totalPrice}</p>
+          <p className=" font-medium ">Order total</p>
+          <p className="text-sm ">${totalPrice}</p>
         </div>
       </div>
       <Button
