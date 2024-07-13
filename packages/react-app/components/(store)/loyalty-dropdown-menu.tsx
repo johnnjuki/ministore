@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, CircleCheck, Gem, Gift } from "lucide-react";
+import { ChevronRight, CircleCheck, Gift } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -9,10 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 const LoyaltyDropdownMenu = () => {
@@ -22,7 +20,7 @@ const LoyaltyDropdownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Gift className="hover:cursor-pointer" size={30} />
+        <Gift className="hover:cursor-pointer bg-background rounded-md" size={30} />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>MiniStore Rewards</DropdownMenuLabel>
