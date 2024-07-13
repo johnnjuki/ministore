@@ -103,7 +103,7 @@ export default function RedeemPointsPage() {
                     )}
                   </div>
 
-                  {points || waysToRedeem?.length !== 0 ? (
+                  {waysToRedeem?.length !== 0 && (
                     <div className="flex flex-col gap-6">
                       <div className="grid grid-cols-2 gap-4">
                         {waysToRedeem.map((wayToRedeem, index) => (
@@ -149,9 +149,8 @@ export default function RedeemPointsPage() {
                         ))}
                       </div>
                     </div>
-                  ) : (
-                    <p className="pt-4 text-muted-foreground">Coming soon</p>
                   )}
+                  {waysToRedeem?.length === 0 && <p className="pt-4 text-muted-foreground">Coming soon</p>}
                 </>
               )}
             </>
