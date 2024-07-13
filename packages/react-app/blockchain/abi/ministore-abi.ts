@@ -1,14 +1,22 @@
 export const ministoreAbi = [
   {
+    anonymous: false,
     inputs: [
       {
+        indexed: true,
         internalType: "address",
-        name: "_cUSDTokenAddress",
+        name: "user",
         type: "address",
       },
+      {
+        indexed: true,
+        internalType: "uint256",
+        name: "wayToRedeemId",
+        type: "uint256",
+      },
     ],
-    stateMutability: "nonpayable",
-    type: "constructor",
+    name: "PointsRedeemed",
+    type: "event",
   },
   {
     anonymous: false,
@@ -109,7 +117,7 @@ export const ministoreAbi = [
       {
         indexed: true,
         internalType: "address",
-        name: "customer",
+        name: "user",
         type: "address",
       },
       {
@@ -126,6 +134,31 @@ export const ministoreAbi = [
       },
     ],
     name: "SocialWayToEarnCompleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "description",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "points",
+        type: "uint256",
+      },
+    ],
+    name: "WayToRedeemAdded",
     type: "event",
   },
   {
@@ -170,6 +203,29 @@ export const ministoreAbi = [
       },
     ],
     name: "addSocialWayToEarn",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "_name",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_description",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "_points",
+        type: "uint256",
+      },
+    ],
+    name: "addWayToRedeem",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -484,6 +540,46 @@ export const ministoreAbi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getWaysToRedeem",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "string",
+            name: "name",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "description",
+            type: "string",
+          },
+          {
+            internalType: "uint256",
+            name: "points",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "numberOfUsersRewarded",
+            type: "uint256",
+          },
+          {
+            internalType: "address[]",
+            name: "usersRewarded",
+            type: "address[]",
+          },
+        ],
+        internalType: "struct MiniStore.WayToRedeem[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -606,6 +702,19 @@ export const ministoreAbi = [
     inputs: [
       {
         internalType: "uint256",
+        name: "_wayToRedeemId",
+        type: "uint256",
+      },
+    ],
+    name: "redeemPoints",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "",
         type: "uint256",
       },
@@ -643,6 +752,40 @@ export const ministoreAbi = [
       {
         internalType: "uint256",
         name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "waysToRedeem",
+    outputs: [
+      {
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "description",
+        type: "string",
+      },
+      {
+        internalType: "uint256",
+        name: "points",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "numberOfUsersRewarded",
         type: "uint256",
       },
     ],

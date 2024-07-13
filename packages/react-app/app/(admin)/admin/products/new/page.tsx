@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
+import { allowedAddresses } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -53,8 +54,6 @@ export default function NewProductPage() {
       toast.error("Please wait for the product image to upload");
       return;
     }
-
-    const allowedAddresses = ["0x4a41ef458562256170afFbeB6fFC97eA80BE34cB" as `0x${string}`, "0x72033384f7d07A490aeAdf4Bd258fbf28a933e52" as `0x${string}`];
 
     if (!allowedAddresses.includes(address!!)) {
       toast.error("You're allowed to explore the admin dashboard but not adding products 🙂");

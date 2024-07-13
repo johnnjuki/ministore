@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Gem, Gift } from "lucide-react";
+import { ChevronRight, CircleCheck, Gem, Gift } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -36,8 +36,21 @@ const LoyaltyDropdownMenu = () => {
             className="flex justify-between hover:cursor-pointer"
           >
             <div className="flex">
-              <Gem className="mr-2 h-4 w-4" />
-              <span>Mini Coins</span>
+              <CircleCheck className="mr-2 h-4 w-4" />
+              <span>Earn</span>
+            </div>
+            <ChevronRight className="h-4 w-4" />
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              router.push("/loyalty/redeem-points");
+            }}
+            disabled={pathname === "/loyalty/redeem-points"}
+            className="flex justify-between hover:cursor-pointer"
+          >
+            <div className="flex">
+              <Gift className="mr-2 h-4 w-4" />
+              <span>Redeem</span>
             </div>
             <ChevronRight className="h-4 w-4" />
           </DropdownMenuItem>
