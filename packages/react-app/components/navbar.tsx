@@ -52,7 +52,7 @@ const Navbar = () => {
         </SheetTrigger>
         <SheetContent
           side={"left"}
-          className="flex w-full max-w-[350px] flex-col"
+          className="flex flex-col"
         >
           <SheetHeader>
             <SheetTitle>MiniStore</SheetTitle>
