@@ -3,5 +3,5 @@ export default function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return(<div className="min-w-[384px]">{children}</div>);
+  return(<div className="">{children}</div>);
 }

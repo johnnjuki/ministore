@@ -7,7 +7,7 @@ export default function CustomerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-w-[384px]">
+    <div className="">
       <Navbar />
       {children}
       <div className="fixed bottom-0 right-0 mb-6 mr-5">
