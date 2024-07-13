@@ -65,10 +65,24 @@ contract MiniStore {
     event SocialWayToEarnAdded(string name, string url, uint256 points);
 
     event SocialWayToEarnCompleted(
-        address indexed customer,
+        address indexed user,
         string name,
         uint256 points
     );
+
+    struct WayToRedeem {
+        string name;
+        string description;
+        uint256 points;
+        uint256 numberOfUsersRewarded;
+        address[] usersRewarded;
+    }
+
+    WayToRedeem[] public waysToRedeem;
+
+    event WayToRedeemAdded( string name, string description, uint256 points);
+
+    event PointsRedeemed(address indexed user, uint256 indexed wayToRedeemId);
 
     function addProduct(
         string memory _imageIpfsCid,
@@ -196,7 +210,11 @@ contract MiniStore {
         return customers.length;
     }
 
-    function getPurchasePointsAndCustomers() external view returns (uint256[2] memory) {
+    function getPurchasePointsAndCustomers()
+        external
+        view
+        returns (uint256[2] memory)
+    {
         return [purchasePointsAwarded, customers.length];
     }
 
@@ -250,6 +268,48 @@ contract MiniStore {
             socialWayToEarn.name,
             socialWayToEarn.points
         );
+    }
+
+    /**
+     * REDEEMING FUNCTIONS
+     */
+
+    function addWayToRedeem(
+        string memory _name,
+        string memory _description,
+        uint256 _points
+    ) public {
+        WayToRedeem memory newWayToRedeem = WayToRedeem({
+            name: _name,
+            description: _description,
+            points: _points,
+            numberOfUsersRewarded: 0,
+            usersRewarded: new address[](0)
+        });
+
+        waysToRedeem.push(newWayToRedeem);
+
+        emit WayToRedeemAdded(_name, _description, _points);
+    }
+
+    function getWaysToRedeem() public view returns (WayToRedeem[] memory) {
+        return waysToRedeem;
+    }
+
+    function redeemPoints(uint256 _wayToRedeemId) public {
+        require(
+            _wayToRedeemId < waysToRedeem.length,
+            "Way to redeem does not exist"
+        );
+        WayToRedeem storage wayToRedeem = waysToRedeem[_wayToRedeemId];
+
+        require(customerPoints[msg.sender] > 0, "Not enough points to redeem");
+
+        wayToRedeem.usersRewarded.push(msg.sender);
+        wayToRedeem.numberOfUsersRewarded++;
+        customerPoints[msg.sender] -= wayToRedeem.points;
+
+        emit PointsRedeemed(msg.sender, _wayToRedeemId);
     }
 }
 

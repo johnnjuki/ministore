@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Heading } from "@/components/heading";
+import { allowedAddresses } from "@/lib/utils";
 
 export default function InstagramFollowPage() {
   const { address, isConnected } = useAccount();
@@ -21,8 +22,6 @@ export default function InstagramFollowPage() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    const allowedAddresses = ["0x4a41ef458562256170afFbeB6fFC97eA80BE34cB" as `0x${string}`, "0x72033384f7d07A490aeAdf4Bd258fbf28a933e52" as `0x${string}`];
 
     if (!allowedAddresses.includes(address!!)) {
       toast.error("You're only allowed to explore the admin dashboard 🙂");

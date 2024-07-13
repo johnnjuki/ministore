@@ -44,8 +44,7 @@ export default function EarnPointsPage() {
 
     if (hash) {
       router.refresh();
-
-      // TODO: Take them to the redeem page
+      router.push("/loyalty/redeem-points")
     }
   }
 
@@ -61,7 +60,7 @@ export default function EarnPointsPage() {
     <div className="space-y-4">
       <ArrowLeft onClick={() => router.back()} />
       <Heading
-        title="Earn Mini Coins"
+        title="Earn"
         description="Earn Mini Coins and turn them into awesome rewards"
       />
       <Separator />
