@@ -28,7 +28,7 @@ export default function RedeemPointsPage() {
     isPending: gettingPointsPending,
     error: gettingPointsError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getCustomerPoints",
     args: [address as `0x{string}`],
@@ -39,7 +39,7 @@ export default function RedeemPointsPage() {
     isPending: waysToRedeemPending,
     error: waysToRedeemError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getWaysToRedeem",
   });
@@ -48,7 +48,7 @@ export default function RedeemPointsPage() {
     if (!address) return;
     const hash = await writeContractAsync({
       address: process.env
-        .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+        .NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
       abi: ministoreAbi,
       functionName: "redeemPoints",
       args: [BigInt(wayToRedeemId)],

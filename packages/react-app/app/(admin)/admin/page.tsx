@@ -43,7 +43,7 @@ export default function AdminPage() {
     isPending: isFetchingProducts,
     error: isFetchingProductsError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
   });
@@ -53,7 +53,7 @@ export default function AdminPage() {
     isPending: isFetchingTotalPoints,
     error: isFetchingTotalPointsError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getTotalPointsAwarded",
   });
@@ -63,7 +63,7 @@ export default function AdminPage() {
     isPending: gettingMembersPending,
     error: gettingMembersError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getMembers",
   });
@@ -73,7 +73,7 @@ export default function AdminPage() {
     isPending: isWithdrawingPayout,
     error: isWithdrawingPayoutError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getPayout",
   });
@@ -90,7 +90,7 @@ export default function AdminPage() {
     try {
       const hash = await writeContractAsync({
         address: process.env
-          .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+          .NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
         abi: ministoreAbi,
         functionName: "processPayout",
         args: [address, BigInt(amount)],

@@ -65,7 +65,7 @@ export default function NewProductPage() {
     try {
       const hash = await writeContractAsync({
         address: process.env
-          .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+          .NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
         abi: ministoreAbi,
         functionName: "addProduct",
         args: [cid, data.name, BigInt(data.price)],
