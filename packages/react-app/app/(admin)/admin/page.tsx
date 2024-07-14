@@ -1,19 +1,44 @@
 "use client";
 
-import { ArrowLeft, ChevronLeft, ChevronRight, CreditCard, DollarSign } from "lucide-react";
+import {
+  ArrowLeft,
+  ChevronRight,
+  CreditCard,
+  DollarSign
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
 
 import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import { Heading } from "@/components/heading";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
+} from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import { allowedAddresses, cn, weiTocUSD } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function AdminPage() {
+  const router = useRouter();
   const { address, isConnected } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
+  const {
+    data: isPayoutProcessed,
+    isPending: isProcessingPayout,
+    error: isProcessingPayoutError,
+    writeContractAsync,
+  } = useWriteContract();
 
   const {
     data: products,
@@ -35,6 +60,44 @@ export default function AdminPage() {
     functionName: "getTotalPointsAwarded",
   });
 
+  const {
+    data: payout,
+    isPending: isFetchingPayout,
+    error: isFetchingPayoutError,
+  } = useReadContract({
+    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    abi: ministoreAbi,
+    functionName: "getPayout",
+  });
+
+  async function processPayout(amount: number) {
+    if (!address) {
+      return;
+    }
+    if (!allowedAddresses.includes(address!!)) {
+      toast.error("You're only allowed to explore the admin dashboard 🙂");
+      return;
+    }
+
+    try {
+      const hash = await writeContractAsync({
+        address: process.env
+          .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+        abi: ministoreAbi,
+        functionName: "processPayout",
+        args: [address, BigInt(amount)],
+      });
+      if (hash) {
+        toast("Payout processed");
+        router.refresh();
+      }
+    } catch (e) {
+      console.log(e);
+      toast.error("Failed to process payout");
+      return;
+    }
+  }
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -45,7 +108,7 @@ export default function AdminPage() {
 
   return (
     <div className="flex-col space-y-4">
-      <Link href="/" className="flex gap-1 text-sm items-center">
+      <Link href="/" className="flex items-center gap-1 text-sm">
         <ArrowLeft className="h-4 w-4" /> Store
       </Link>
       <Heading title="Dashboard" description="Manage your store" />
@@ -75,8 +138,9 @@ export default function AdminPage() {
                       {products?.reduce(
                         (total, product) =>
                           total +
-                          product.customers.length *
-                            Number(BigInt(product.price).toString()),
+                          (product.customers.length *
+                            Number(BigInt(product.price).toString())) /
+                            10 ** 18,
                         0,
                       )}
                     </div>
@@ -96,6 +160,39 @@ export default function AdminPage() {
                     </div>
                   </CardContent>
                 </Card>
+
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <Button
+                      className={cn("hidden", payout && "block")}
+                      disabled={isProcessingPayout}
+                      variant="secondary"
+                    >
+                      {isProcessingPayout ? "Withdrawing..." : "Withdraw"}
+                    </Button>
+                  </DrawerTrigger>
+                  <DrawerContent>
+                    <div className="mx-auto w-full max-w-sm">
+                      <DrawerHeader>
+                        <DrawerTitle className="text-center">Available Payout</DrawerTitle>
+                      </DrawerHeader>
+                      <div className="flex items-center justify-center text-7xl font-bold tracking-tighter">
+                        ${weiTocUSD(payout!!)}
+                      </div>
+                      <DrawerFooter>
+                        <Button
+                          onClick={() => processPayout(Number(payout))}
+                          disabled={isProcessingPayout}
+                        >
+                          {isProcessingPayout ? "Withdrawing..." : "Withdraw"}
+                        </Button>
+                        <DrawerClose asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </DrawerClose>
+                      </DrawerFooter>
+                    </div>
+                  </DrawerContent>
+                </Drawer>
               </div>
               <div>
                 <div className="text-lg font-medium text-muted-foreground">
@@ -147,7 +244,8 @@ export default function AdminPage() {
                           <ChevronRight className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                          {totalPoints ? totalPoints.toString() : 0} points awarded
+                          {totalPoints ? totalPoints.toString() : 0} points
+                          awarded
                         </CardContent>
                       </Card>
                     </Link>

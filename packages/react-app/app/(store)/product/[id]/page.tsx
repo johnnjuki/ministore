@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import useCart from "@/hooks/use-cart";
+import { weiTocUSD } from "@/lib/utils";
 
 export default function ProductPage({
   params,
@@ -67,7 +68,7 @@ export default function ProductPage({
                   {product?.name}
                 </h1>
                 <p className="mt-2 text-xl">
-                  ${BigInt(product.price).toString()}
+                  ${weiTocUSD(product?.price)}
                 </p>
                 <Separator className="my-4" />
                 <p className="text-green-500">In Stock</p>

@@ -1,5 +1,6 @@
 "use client";
 
+import { weiTocUSD } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 
 export type ProductColumn = {
@@ -16,5 +17,8 @@ export const productColumns: ColumnDef<ProductColumn>[] = [
   {
     accessorKey: "price",
     header: "Price",
+    cell: ({ row }) => {
+      return <div>${weiTocUSD(row.original.price)}</div>
+    }
   },
 ];

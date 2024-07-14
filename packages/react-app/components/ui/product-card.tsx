@@ -1,3 +1,4 @@
+import { weiTocUSD } from "@/lib/utils";
 import { Product } from "@/types";
 import Image from "next/image";
 
@@ -18,7 +19,7 @@ const ProductCard = ({ product }: { product: Product }) => {
          In Stock
         </p>
         <p className="font-semibold mt-3">
-          ${BigInt(product.price).toString()}
+          ${weiTocUSD(product.price)}
         </p>
       </div>
     </div>

@@ -27,6 +27,10 @@ contract MiniStore {
 
     address[] public customers;
 
+    address[] public sellers;
+
+    uint256 public payout;
+
     event ProductAdded(
         address indexed owner,
         uint256 productId,
@@ -80,7 +84,7 @@ contract MiniStore {
 
     WayToRedeem[] public waysToRedeem;
 
-    event WayToRedeemAdded( string name, string description, uint256 points);
+    event WayToRedeemAdded(string name, string description, uint256 points);
 
     event PointsRedeemed(address indexed user, uint256 indexed wayToRedeemId);
 
@@ -94,12 +98,24 @@ contract MiniStore {
             id: productId,
             imageIpfsCid: _imageIpfsCid,
             name: _name,
-            price: _price,
+            price: _price * 10 ** 18,
             owner: msg.sender,
             customers: new address[](0)
         });
 
         products.push(newProduct);
+
+        bool isSeller = false;
+        for (uint256 i = 0; i < sellers.length; i++) {
+            if (sellers[i] == msg.sender) {
+                isSeller = true;
+                break;
+            }
+        }
+
+        if (!isSeller) {
+            sellers.push(msg.sender);
+        }
 
         emit ProductAdded(msg.sender, productId, _imageIpfsCid, _name, _price);
     }
@@ -129,32 +145,12 @@ contract MiniStore {
             "Owners and points length mismatch"
         );
 
-        uint256 totalCost = 0;
-
         for (uint256 i = 0; i < _productIds.length; i++) {
             Product storage product = products[_productIds[i]];
             require(product.id == _productIds[i], "Product does not exist");
-            totalCost += product.price;
-        }
 
-        require(
-            cUSDToken.transferFrom(
-                msg.sender,
-                address(this),
-                totalCost / (10 ** cUSDToken.decimals())
-            ),
-            "Token transfer failed"
-        );
+            payout += product.price;
 
-        for (uint256 i = 0; i < _productIds.length; i++) {
-            Product storage product = products[_productIds[i]];
-            require(
-                cUSDToken.transfer(
-                    product.owner,
-                    product.price / (10 ** cUSDToken.decimals())
-                ),
-                "Token transfer to owner failed"
-            );
             product.customers.push(msg.sender);
             purchasedProducts[msg.sender].push(product);
 
@@ -190,6 +186,34 @@ contract MiniStore {
         address _customer
     ) public view returns (Product[] memory) {
         return purchasedProducts[_customer];
+    }
+
+    function processPayout(
+        address _seller,
+        uint256 _amount
+    ) public returns (bool) {
+        require(_amount > 0, "Amount must be greater than 0");
+
+        bool isPayoutProcessed = false;
+        for (uint256 i = 0; i < sellers.length; i++) {
+            if (sellers[i] == _seller) {
+                require(
+                    cUSDToken.transfer(_seller, _amount),
+                    "Failed to process payout"
+                );
+
+                payout -= _amount;
+
+                isPayoutProcessed = true;
+                break;
+            }
+        }
+
+        return isPayoutProcessed;
+    }
+
+    function getPayout() public view returns (uint256) {
+        return payout;
     }
 
     /**
@@ -314,14 +338,6 @@ contract MiniStore {
 }
 
 interface ERC20 {
-    function transferFrom(
-        address sender,
-        address recipient,
-        uint256 amount
-    ) external returns (bool);
-
-    function decimals() external view returns (uint8);
-
     function transfer(address to, uint256 amount) external returns (bool);
 
     function approve(address spender, uint256 amount) external returns (bool);
