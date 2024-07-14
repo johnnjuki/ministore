@@ -20,7 +20,7 @@ const LoyaltyDropdownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Gift className="hover:cursor-pointer bg-background rounded-md" size={30} />
+        <Gift className="hover:cursor-pointer  rounded-full" size={30} />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>MiniStore Rewards</DropdownMenuLabel>

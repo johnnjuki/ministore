@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ChevronRight, CreditCard, DollarSign } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, CreditCard, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAccount, useReadContract } from "wagmi";
@@ -45,8 +45,8 @@ export default function AdminPage() {
 
   return (
     <div className="flex-col space-y-4">
-      <Link href="/">
-        <ArrowLeft />
+      <Link href="/" className="flex gap-1 text-sm items-center">
+        <ArrowLeft className="h-4 w-4" /> Store
       </Link>
       <Heading title="Dashboard" description="Manage your store" />
       <Separator />
