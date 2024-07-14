@@ -1,14 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAccount, useWriteContract } from "wagmi";
 import * as z from "zod";
-import Link from "next/link";
-import { ArrowLeft, Plus } from "lucide-react";
 
 import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import { Heading } from "@/components/heading";
@@ -23,8 +23,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "sonner";
 import { allowedAddresses } from "@/lib/utils";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -56,7 +56,9 @@ export default function NewProductPage() {
     }
 
     if (!allowedAddresses.includes(address!!)) {
-      toast.error("You're allowed to explore the admin dashboard but not adding products 🙂");
+      toast.error(
+        "You're allowed to explore the admin dashboard but not adding products 🙂",
+      );
       return;
     }
 
@@ -110,7 +112,7 @@ export default function NewProductPage() {
 
   return (
     <div className="flex-col space-y-4">
-       <Link href="/admin/products">
+      <Link href="/admin/products">
         <ArrowLeft />
       </Link>
       <Heading title="Add Product" description="Add a new product" />

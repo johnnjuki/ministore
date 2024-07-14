@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import IconButton from "@/components/ui/icon-button";
 import useCart from "@/hooks/use-cart";
 import { Product } from "@/types";
+import { weiTocUSD } from "@/lib/utils";
 
 const CartItem = ({ product }: { product: Product }) => {
   const cart = useCart();
@@ -31,7 +32,7 @@ const CartItem = ({ product }: { product: Product }) => {
             <p className="text-lg font-semibold">{product.name}</p>
           </div>
           <p className="mt-2 text-sm ">
-            ${BigInt(product.price).toString()}
+            ${weiTocUSD(product.price)}
           </p>
         </div>
       </div>
