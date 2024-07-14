@@ -44,7 +44,7 @@ export default function EarnPointsPage() {
 
     if (hash) {
       router.refresh();
-      router.push("/loyalty/redeem-points")
+      router.push("/loyalty/redeem-points");
     }
   }
 
@@ -82,9 +82,7 @@ export default function EarnPointsPage() {
               ) : (
                 <>
                   {socialWaysToEarn?.length === 0 ? (
-                    <p className="pt-4 text-muted-foreground">
-                      Coming soon
-                    </p>
+                    <p className="pt-4 text-muted-foreground">Coming soon</p>
                   ) : (
                     <div className="flex flex-col gap-6 pt-4">
                       {socialWaysToEarn?.map((socialWayToEarn, index) => (

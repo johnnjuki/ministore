@@ -11,7 +11,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import useCart from "@/hooks/use-cart";
 import { cn } from "@/lib/utils";
@@ -46,14 +46,16 @@ const Navbar = () => {
 
   return (
     <div className="mb-6 flex h-16 items-center justify-between border-b">
-      <Sheet open={isMenuOpened} onOpenChange={() => {setIsMenuOpened(!isMenuOpened)}} >
+      <Sheet
+        open={isMenuOpened}
+        onOpenChange={() => {
+          setIsMenuOpened(!isMenuOpened);
+        }}
+      >
         <SheetTrigger>
           <AlignLeft />
         </SheetTrigger>
-        <SheetContent
-          side={"left"}
-          className="flex flex-col"
-        >
+        <SheetContent side={"left"} className="flex flex-col">
           <SheetHeader>
             <SheetTitle>MiniStore</SheetTitle>
           </SheetHeader>

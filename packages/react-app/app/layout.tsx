@@ -5,9 +5,9 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { BlockchainProviders } from "@/providers/blockchain-providers";
 import { Header } from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 import "./globals.css";
-import { ThemeProvider } from "@/providers/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 const urbanist = Urbanist({ subsets: ["latin"] });
@@ -24,14 +24,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${urbanist.className} mx-auto p-3 max-w-sm`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-
-        <BlockchainProviders>
-          <Header />
-          {children}
-          <Toaster />
-        </BlockchainProviders>
+      <body className={`${urbanist.className} mx-auto max-w-sm p-4`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <BlockchainProviders>
+            <Header />
+            {children}
+            <Toaster />
+          </BlockchainProviders>
         </ThemeProvider>
       </body>
     </html>
