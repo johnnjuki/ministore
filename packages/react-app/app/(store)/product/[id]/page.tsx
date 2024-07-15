@@ -11,12 +11,9 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import useCart from "@/hooks/use-cart";
 import { weiTocUSD } from "@/lib/utils";
+import Navbar from "@/components/navbar";
 
-export default function ProductPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default function ProductPage({ params }: { params: { id: string } }) {
   const [isMounted, setIsMounted] = useState(false);
   const cart = useCart();
 
@@ -45,6 +42,7 @@ export default function ProductPage({
 
   return (
     <div className="">
+      <Navbar />
       {isPending ? (
         <Skeleton className="aspect-square rounded-xl" />
       ) : (
@@ -64,15 +62,11 @@ export default function ProductPage({
                 />
               </div>
               <div className="mt-10">
-                <h1 className="text-2xl font-bold">
-                  {product?.name}
-                </h1>
-                <p className="mt-2 text-xl">
-                  ${weiTocUSD(product?.price)}
-                </p>
+                <h1 className="text-2xl font-bold">{product?.name}</h1>
+                <p className="mt-2 text-xl">${weiTocUSD(product?.price)}</p>
                 <Separator className="my-4" />
                 <p className="text-green-500">In Stock</p>
-                <div className="flex items-center gap-x-3 mt-4">
+                <div className="mt-4 flex items-center gap-x-3">
                   <Button
                     onClick={onAddToCart}
                     className="flex items-center gap-x-2 rounded-full"

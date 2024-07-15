@@ -8,7 +8,7 @@ export default async function CustomerLayout({
 }) {
   return (
     <div className="">
-      <Navbar />
+      {/* <Navbar /> */}
       {children}
       <div className="fixed bottom-0 right-0 mb-6 mr-5">
         <LoyaltyDropdownMenu />

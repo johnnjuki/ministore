@@ -8,6 +8,7 @@ import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import ProductCard from "@/components/ui/product-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Product } from "@/types";
+import Navbar from "@/components/navbar";
 
 export default function CustomerPage() {
   const { address, isConnected } = useAccount();
@@ -33,6 +34,8 @@ export default function CustomerPage() {
 
   return (
     <div>
+      <Navbar />
+
       {!isConnected ? (
         <p className="text-center text-sm text-red-500">
           Please connect your wallet
