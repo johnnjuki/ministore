@@ -80,6 +80,11 @@ const Navbar = () => {
             <div className="w-fit">
               <ThemeSwitcher />
             </div>
+
+            <p className="text-muted-foreground text-sm">
+            Built for <Link href="https://www.opera.com/products/minipay" className="underline text-green-500">MiniPay</Link>
+          </p>
+
           </div>
         </SheetContent>
       </Sheet>

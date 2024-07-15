@@ -27,7 +27,7 @@ export default function EarnPointsPage() {
     isPending: socialWaysToEarnPending,
     error: socialWaysToEarnError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getSocialWaysToEarn",
   });
@@ -36,7 +36,7 @@ export default function EarnPointsPage() {
     if (!address) return;
     const hash = await writeContractAsync({
       address: process.env
-        .NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
+        .NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
       abi: ministoreAbi,
       functionName: "completeSocialWayToEarn",
       args: [BigInt(wayToEarnId)],

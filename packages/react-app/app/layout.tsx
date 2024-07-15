@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Urbanist } from "next/font/google";
 import "@rainbow-me/rainbowkit/styles.css";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 import { BlockchainProviders } from "@/providers/blockchain-providers";
 import { Header } from "@/components/header";
@@ -17,27 +19,31 @@ export const metadata: Metadata = {
   description: "E-Commerce store on MiniPay",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en">
-      <body className={`${urbanist.className} mx-auto max-w-sm p-4`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <BlockchainProviders>
-            <Header />
-            {children}
-            <Toaster />
-          </BlockchainProviders>
-        </ThemeProvider>
-      </body>
+      <SessionProvider session={session}>
+        <body className={`${urbanist.className} mx-auto max-w-sm p-4`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <BlockchainProviders>
+              <Header />
+              {children}
+              <Toaster />
+            </BlockchainProviders>
+          </ThemeProvider>
+        </body>
+      </SessionProvider>
     </html>
   );
 }

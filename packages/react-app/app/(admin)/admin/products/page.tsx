@@ -22,7 +22,7 @@ export default function ProductsPage() {
     error,
   } = useReadContract({
     address: process.env
-      .NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
+      .NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
   });

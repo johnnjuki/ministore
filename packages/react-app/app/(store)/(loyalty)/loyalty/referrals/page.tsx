@@ -29,7 +29,7 @@ export default function ReferralsPage() {
     isPending: gettingMembersPending,
     error: gettingMembersError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getMembers",
   });
@@ -39,7 +39,7 @@ export default function ReferralsPage() {
     try {
       const hash = await writeContractAsync({
         address: process.env
-          .NEXT_PUBLC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
+          .NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
         abi: ministoreAbi,
         functionName: "addMember",
       });
