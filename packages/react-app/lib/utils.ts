@@ -12,6 +12,7 @@ export function weiTocUSD(wei: bigint) {
 export const allowedAddresses = [
   "0x4a41ef458562256170afFbeB6fFC97eA80BE34cB" as `0x${string}`,
   "0x72033384f7d07A490aeAdf4Bd258fbf28a933e52" as `0x${string}`,
+  "0x691a4D21D5d0240511A3DD48D12f288154675C2B" as `0x${string}`,
 ];
 
 export const cUSDAlfajoresContractAddress: `0x${string}` =

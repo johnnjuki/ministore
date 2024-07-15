@@ -3,6 +3,7 @@ import { Inter, Urbanist } from "next/font/google";
 import "@rainbow-me/rainbowkit/styles.css";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import { Analytics } from '@vercel/analytics/react';
 
 import { BlockchainProviders } from "@/providers/blockchain-providers";
 import { Header } from "@/components/header";
@@ -39,6 +40,7 @@ export default async function RootLayout({
             <BlockchainProviders>
               <Header />
               {children}
+              <Analytics />
               <Toaster />
             </BlockchainProviders>
           </ThemeProvider>
