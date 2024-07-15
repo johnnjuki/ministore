@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Product } from "@/types";
 
 export default function CustomerPage() {
+  const { address, isConnected } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
 
   const {
@@ -17,7 +18,7 @@ export default function CustomerPage() {
     isPending,
     error,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
   });
@@ -32,31 +33,39 @@ export default function CustomerPage() {
 
   return (
     <div>
-      {error ? (
-        <p className="text-center text-sm mt-16 text-red-500">
-          Error fetching products.
+      {!isConnected ? (
+        <p className="text-center text-sm text-red-500">
+          Please connect your wallet
         </p>
       ) : (
         <>
-          {isPending ? (
-            <Skeleton className="aspect-square rounded-xl" />
+          {error ? (
+            <p className="mt-16 text-center text-sm text-red-500">
+              Error fetching products.
+            </p>
           ) : (
             <>
-              {products?.length === 0 ? (
-                <div className="flex mt-16 h-full w-full items-center justify-center text-neutral-500">
-                  No products found.
-                </div>
+              {isPending ? (
+                <Skeleton className="aspect-square rounded-xl" />
               ) : (
-                <div className="grid grid-cols-1 gap-6">
-                  {products?.slice().reverse().map((product: Product, index) => (
-                    <Link
-                      href={`/product/${product.id}`}
-                      key={index}
-                    >
-                      <ProductCard product={product} />
-                    </Link>
-                  ))}
-                </div>
+                <>
+                  {products?.length === 0 ? (
+                    <div className="mt-16 flex h-full w-full items-center justify-center text-neutral-500">
+                      No products found.
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 gap-6">
+                      {products
+                        ?.slice()
+                        .reverse()
+                        .map((product: Product, index) => (
+                          <Link href={`/product/${product.id}`} key={index}>
+                            <ProductCard product={product} />
+                          </Link>
+                        ))}
+                    </div>
+                  )}
+                </>
               )}
             </>
           )}

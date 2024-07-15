@@ -52,7 +52,7 @@ const Checkout = () => {
           abi: stableTokenAlfajoresAbi,
           functionName: "transfer",
           args: [
-            process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+            process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
             BigInt(amount),
           ],
         });
@@ -85,7 +85,7 @@ const Checkout = () => {
       if (isCheckoutProcessed) {
         const hash = await writeContractAsync({
           address: process.env
-            .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+            .NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
           abi: ministoreAbi,
           functionName: "purchaseProducts",
           args: [owners, productIds, totalPoints],

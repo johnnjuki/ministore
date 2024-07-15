@@ -46,7 +46,7 @@ export default function PointsPage() {
     isPending: purchaseWaysToEarnPending,
     error: purchaseWaysToEarnError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getPurchasePointsAndCustomers",
   });
@@ -56,7 +56,7 @@ export default function PointsPage() {
     isPending: socialWaysToEarnPending,
     error: socialWaysToEarnError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getSocialWaysToEarn",
   });
@@ -66,7 +66,7 @@ export default function PointsPage() {
     isPending: waysToRedeemPending,
     error: waysToRedeemError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getWaysToRedeem",
   });
@@ -83,7 +83,7 @@ export default function PointsPage() {
     }
     const hash = await writeContractAsync({
       address: process.env
-        .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+        .NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
       abi: ministoreAbi,
       functionName: "addWayToRedeem",
       args: [name, description, BigInt(points)],

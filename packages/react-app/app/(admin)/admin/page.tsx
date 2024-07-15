@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  ArrowLeft,
-  ChevronRight,
-  CreditCard,
-  DollarSign
-} from "lucide-react";
+import { ArrowLeft, ChevronRight, CreditCard, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
@@ -21,18 +16,21 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger
+  DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { allowedAddresses, cn, weiTocUSD } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
 
 export default function AdminPage() {
   const router = useRouter();
   const { address, isConnected } = useAccount();
   const [isMounted, setIsMounted] = useState(false);
+  const confetti = useConfettiStore();
+  
   const {
     data: isPayoutProcessed,
     isPending: isProcessingPayout,
@@ -45,7 +43,7 @@ export default function AdminPage() {
     isPending: isFetchingProducts,
     error: isFetchingProductsError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getProducts",
   });
@@ -55,17 +53,27 @@ export default function AdminPage() {
     isPending: isFetchingTotalPoints,
     error: isFetchingTotalPointsError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getTotalPointsAwarded",
   });
 
   const {
-    data: payout,
-    isPending: isFetchingPayout,
-    error: isFetchingPayoutError,
+    data: members,
+    isPending: gettingMembersPending,
+    error: gettingMembersError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
+    abi: ministoreAbi,
+    functionName: "getMembers",
+  });
+
+  const {
+    data: payout,
+    isPending: isWithdrawingPayout,
+    error: isWithdrawingPayoutError,
+  } = useReadContract({
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getPayout",
   });
@@ -82,13 +90,14 @@ export default function AdminPage() {
     try {
       const hash = await writeContractAsync({
         address: process.env
-          .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+          .NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
         abi: ministoreAbi,
         functionName: "processPayout",
         args: [address, BigInt(amount)],
       });
       if (hash) {
-        toast("Payout processed");
+        toast.success("Payout processed");
+        confetti.onOpen();
         router.refresh();
       }
     } catch (e) {
@@ -174,7 +183,9 @@ export default function AdminPage() {
                   <DrawerContent>
                     <div className="mx-auto w-full max-w-sm">
                       <DrawerHeader>
-                        <DrawerTitle className="text-center">Available Payout</DrawerTitle>
+                        <DrawerTitle className="text-center">
+                          Available Payout
+                        </DrawerTitle>
                       </DrawerHeader>
                       <div className="flex items-center justify-center text-7xl font-bold tracking-tighter">
                         ${weiTocUSD(payout!!)}
@@ -222,37 +233,63 @@ export default function AdminPage() {
             <div className="text-lg font-medium text-muted-foreground">
               Loyalty Program
             </div>
+            <div className="flex flex-col gap-4">
+              {isFetchingTotalPointsError ? (
+                <p className="mt-16 text-center text-sm text-red-500">
+                  Error fetching points loyalty program.
+                </p>
+              ) : (
+                <>
+                  {isFetchingTotalPoints ? (
+                    <Skeleton className="aspect-square rounded-xl" />
+                  ) : (
+                    <>
+                      <Link href="/admin/loyalty/points">
+                        <Card className="mt-2 bg-muted">
+                          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            {/* Add badge showing active*/}
+                            <CardTitle className="text-lg font-medium">
+                              Points
+                            </CardTitle>
+                            {/* // TODO: Animate this Icon */}
+                            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                          </CardHeader>
+                          <CardContent>
+                            {totalPoints ? totalPoints.toString() : 0} points
+                            awarded
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    </>
+                  )}
+                </>
+              )}
 
-            {isFetchingTotalPointsError ? (
-              <p className="mt-16 text-center text-sm text-red-500">
-                Error fetching points loyalty program.
-              </p>
-            ) : (
-              <>
-                {isFetchingTotalPoints ? (
-                  <Skeleton className="aspect-square rounded-xl" />
-                ) : (
-                  <>
-                    <Link href="/admin/loyalty/points">
+              {gettingMembersError ? (
+                <p className="mt-16 text-center text-sm text-red-500">
+                  Error fetching points loyalty program.
+                </p>
+              ) : (
+                <>
+                  {gettingMembersPending ? (
+                    <Skeleton className="aspect-square rounded-xl" />
+                  ) : (
+                    <>
                       <Card className="mt-2 bg-muted">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          {/* Add badge showing active*/}
+                        <CardHeader className="pb-2">
                           <CardTitle className="text-lg font-medium">
-                            Points
+                            Members
                           </CardTitle>
-                          {/* // TODO: Animate this Icon */}
-                          <ChevronRight className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                          {totalPoints ? totalPoints.toString() : 0} points
-                          awarded
+                          {members.length !== 0 ? members.length : "None yet"}
                         </CardContent>
                       </Card>
-                    </Link>
-                  </>
-                )}
-              </>
-            )}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </>
       )}

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Inter, Urbanist } from "next/font/google";
 import "@rainbow-me/rainbowkit/styles.css";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 import { BlockchainProviders } from "@/providers/blockchain-providers";
 import { Header } from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 import "./globals.css";
-import { ThemeProvider } from "@/providers/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 const urbanist = Urbanist({ subsets: ["latin"] });
@@ -17,23 +19,31 @@ export const metadata: Metadata = {
   description: "E-Commerce store on MiniPay",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en">
-      <body className={`${urbanist.className} mx-auto p-3 max-w-sm`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-
-        <BlockchainProviders>
-          <Header />
-          {children}
-          <Toaster />
-        </BlockchainProviders>
-        </ThemeProvider>
-      </body>
+      <SessionProvider session={session}>
+        <body className={`${urbanist.className} mx-auto max-w-sm p-4`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <BlockchainProviders>
+              <Header />
+              {children}
+              <Toaster />
+            </BlockchainProviders>
+          </ThemeProvider>
+        </body>
+      </SessionProvider>
     </html>
   );
 }

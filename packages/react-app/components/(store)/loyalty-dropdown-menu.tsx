@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, CircleCheck, Gift } from "lucide-react";
+import { ChevronRight, CircleCheck, Gift, Users } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -20,7 +20,10 @@ const LoyaltyDropdownMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Gift className="hover:cursor-pointer  rounded-full" size={30} />
+        <Gift
+          className="rounded-full bg-secondary hover:cursor-pointer"
+          size={30}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>MiniStore Rewards</DropdownMenuLabel>
@@ -36,6 +39,19 @@ const LoyaltyDropdownMenu = () => {
             <div className="flex">
               <CircleCheck className="mr-2 h-4 w-4" />
               <span>Earn</span>
+            </div>
+            <ChevronRight className="h-4 w-4" />
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              router.push("/loyalty/referrals");
+            }}
+            disabled={pathname === "/loyalty/referrals"}
+            className="flex justify-between hover:cursor-pointer"
+          >
+            <div className="flex">
+              <Users className="mr-2 h-4 w-4" />
+              <span>Referrals</span>
             </div>
             <ChevronRight className="h-4 w-4" />
           </DropdownMenuItem>

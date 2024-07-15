@@ -1,7 +1,7 @@
 import LoyaltyDropdownMenu from "@/components/(store)/loyalty-dropdown-menu";
 import Navbar from "@/components/navbar";
 
-export default function CustomerLayout({
+export default async function CustomerLayout({
   children,
 }: {
   children: React.ReactNode;

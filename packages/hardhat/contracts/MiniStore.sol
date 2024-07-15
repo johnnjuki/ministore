@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.26;
+pragma solidity ^0.8.17;
 
 contract MiniStore {
     address public cUSDTokenAddress =
@@ -28,6 +28,9 @@ contract MiniStore {
     address[] public customers;
 
     address[] public sellers;
+
+    // users who have connected their socials
+    address[] public members;
 
     uint256 public payout;
 
@@ -214,6 +217,25 @@ contract MiniStore {
 
     function getPayout() public view returns (uint256) {
         return payout;
+    }
+
+    function addMember() public {
+        bool isMember = false;
+        for (uint256 i = 0; i < members.length; i++) {
+            if (members[i] == msg.sender) {
+                isMember = true;
+                break;
+            }
+        }
+
+        if (!isMember) {
+            customerPoints[msg.sender] += 500;
+            members.push(msg.sender);
+        }
+    }
+
+    function getMembers() public view returns (address[] memory) {
+        return members;
     }
 
     /**

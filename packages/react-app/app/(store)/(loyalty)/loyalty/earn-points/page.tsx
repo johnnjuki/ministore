@@ -27,7 +27,7 @@ export default function EarnPointsPage() {
     isPending: socialWaysToEarnPending,
     error: socialWaysToEarnError,
   } = useReadContract({
-    address: process.env.NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+    address: process.env.NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
     abi: ministoreAbi,
     functionName: "getSocialWaysToEarn",
   });
@@ -36,7 +36,7 @@ export default function EarnPointsPage() {
     if (!address) return;
     const hash = await writeContractAsync({
       address: process.env
-        .NEXT_PUBLIC_ALFAJORES_CONTRACT_ADDRESS as `0x{string}`,
+        .NEXT_PUBLIC_MINISTORE_CONTRACT_ADDRESS as `0x{string}`,
       abi: ministoreAbi,
       functionName: "completeSocialWayToEarn",
       args: [BigInt(wayToEarnId)],
@@ -44,7 +44,7 @@ export default function EarnPointsPage() {
 
     if (hash) {
       router.refresh();
-      router.push("/loyalty/redeem-points")
+      router.push("/loyalty/redeem-points");
     }
   }
 
@@ -82,9 +82,7 @@ export default function EarnPointsPage() {
               ) : (
                 <>
                   {socialWaysToEarn?.length === 0 ? (
-                    <p className="pt-4 text-muted-foreground">
-                      Coming soon
-                    </p>
+                    <p className="pt-4 text-muted-foreground">Coming soon</p>
                   ) : (
                     <div className="flex flex-col gap-6 pt-4">
                       {socialWaysToEarn?.map((socialWayToEarn, index) => (
