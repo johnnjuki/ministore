@@ -30,7 +30,7 @@ import { allowedAddresses } from "@/lib/utils";
 
 export default function PointsPage() {
   const router = useRouter();
-  const pathname= usePathname();
+  const pathname = usePathname();
   const { address, isConnected } = useAccount();
   const [purchaseWayToEarn, setPurchaseWayToEarn] =
     useState<PurchaseWayToEarn>();
@@ -145,7 +145,7 @@ export default function PointsPage() {
 
             {!isConnected ? (
               <p className="text-center text-sm text-red-500">
-                Please connect your wallet
+                Please connect your wallet <br /> or access using <Link target="_blank" href="https://www.opera.com/products/minipay" className="underline ">MiniPay</Link>
               </p>
             ) : (
               <>
@@ -188,7 +188,7 @@ export default function PointsPage() {
 
             {!isConnected ? (
               <p className="text-center text-sm text-red-500">
-                Please connect your wallet
+                Please connect your wallet <br /> or access using <Link target="_blank" href="https://www.opera.com/products/minipay" className="underline ">MiniPay</Link>
               </p>
             ) : (
               <>
@@ -219,10 +219,14 @@ export default function PointsPage() {
                             <div className="flex flex-col space-y-6">
                               {socials
                                 .filter((social) => {
-                                  return !socialWaysToEarn!!.some(
-                                    (wayToEarn) =>
-                                      wayToEarn.name === social.description,
-                                  );
+                                  return !socialWaysToEarn.some((wayToEarn) => {
+                                    const lastWordName = wayToEarn.name
+                                      .split(" ")
+                                      .pop();
+                                    const lastWordDescription =
+                                      social.description.split(" ").pop();
+                                    return lastWordName === lastWordDescription;
+                                  });
                                 })
                                 .map((social, index) => (
                                   <Link
@@ -259,7 +263,7 @@ export default function PointsPage() {
           <div className="mt-4">
             {!isConnected ? (
               <p className="text-center text-sm text-red-500">
-                Please connect your wallet
+                Please connect your wallet <br /> or access using <Link target="_blank" href="https://www.opera.com/products/minipay" className="underline ">MiniPay</Link>
               </p>
             ) : (
               <>
@@ -306,9 +310,12 @@ export default function PointsPage() {
                                     reward.points,
                                   )
                                 }
-                                disabled={isAddingWayToReddeem || waysToRedeem?.some((way) =>
-                                  way.name.includes(reward.title),
-                                )}
+                                disabled={
+                                  isAddingWayToReddeem ||
+                                  waysToRedeem?.some((way) =>
+                                    way.name.includes(reward.title),
+                                  )
+                                }
                                 size="sm"
                               >
                                 {waysToRedeem?.some((way) =>

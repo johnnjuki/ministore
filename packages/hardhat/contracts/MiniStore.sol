@@ -230,6 +230,7 @@ contract MiniStore {
 
         if (!isMember) {
             customerPoints[msg.sender] += 500;
+            totalPointsAwarded += 500;
             members.push(msg.sender);
         }
     }

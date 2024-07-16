@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -67,7 +68,14 @@ export default function EarnPointsPage() {
 
       {!isConnected ? (
         <p className="text-center text-sm text-red-500">
-          Please connect your wallet
+          Please connect your wallet <br /> or access using{" "}
+          <Link
+            target="_blank"
+            href="https://www.opera.com/products/minipay"
+            className="underline"
+          >
+            MiniPay
+          </Link>
         </p>
       ) : (
         <>

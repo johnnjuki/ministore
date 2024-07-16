@@ -1,15 +1,16 @@
 "use client";
 
+import { ArrowLeft, CopyIcon } from "lucide-react";
+import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
-import { ArrowLeft, CopyIcon } from "lucide-react";
-import { signIn, signOut, useSession, SessionProvider } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
+import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import { Heading } from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ministoreAbi } from "@/blockchain/abi/ministore-abi";
 import { toast } from "sonner";
 
 export default function ReferralsPage() {
@@ -64,7 +65,9 @@ export default function ReferralsPage() {
 
   return (
     <div className="space-y-4">
-      <ArrowLeft onClick={() => router.back()} />
+      <Link href="/">
+      <ArrowLeft />
+      </Link>
       <Heading
         title="Referrals"
         description="Gift your friends with rewards and claim yours when they place an order"
@@ -73,7 +76,7 @@ export default function ReferralsPage() {
 
       {!isConnected ? (
         <p className="text-center text-sm text-red-500">
-          Please connect your wallet
+          Please connect your wallet <br /> or access using <Link target="_blank" href="https://www.opera.com/products/minipay" className="underline ">MiniPay</Link>
         </p>
       ) : (
         <div>
