@@ -6,9 +6,9 @@ A web3 online store deployed on the Celo blockchain, featuring a loyalty program
 
 1. [Overview](#overview)
 2. [Technology Stack](#technology-stack)
-3. [Project Structure](#project-structure)
-4. [Setup](#setup)
-5. [Usage](#usage)
+3. [Setup](#setup)
+4. [Usage](#usage)
+5. [Roadmap](#roadmap)
 
 
 ## Overview
