@@ -56,7 +56,7 @@ To use MiniStore, you can check the [demo](https://youtu.be/xe3Q8-jbXe8) or foll
 
 ## Roadmap
 
-**Comprehensive e-commerce builder for businesses:**
+#### Comprehensive e-commerce builder for businesses:
 
 The most significant addition to our roadmap is transforming
 MiniStore into a comprehensive e-commerce builder app on
@@ -65,7 +65,7 @@ This will empower MiniPay users to establish their own online
 stores seamlessly, leveraging the robust features and
 functionalities of MiniStore. 
 
-**Loyalty Programs:**
+#### Loyalty Programs:
 
 Adding more ways MiniPay users can reward their most loyal customers.
 One way already implemented, but working on embedding it to the MiniStore app, is tracking the most active customer and distributing rewards. This implementation uses Olas and SubQuery, and you can find the SubQuery indexer [here](https://github.com/johnnjuki/ministore-subquery).
